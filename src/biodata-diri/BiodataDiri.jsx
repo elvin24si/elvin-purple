@@ -15,6 +15,7 @@ export default function BiodataDiri() {
         keahlian: ["React", "JavaScript", "HTML & CSS", "Python", "Git", "MySQL"],
         hobi: [
             "Gaming",
+            "Musik",
             "Menulis dan membaca novel",
             "Merakit PC",
             "Browsing Shoppee"
