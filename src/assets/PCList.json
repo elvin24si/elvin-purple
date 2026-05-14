@@ -1,0 +1,461 @@
+[
+  {
+    "id": "SIG-001",
+    "name": "SIGNATURE // AYAKA",
+    "category": "Signature",
+    "price": 4599,
+    "image": "https://i.imgur.com/sFanPRj.jpeg",
+    "tags": ["Signature", "Ultra-High", "White-Build", "Workstation"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4090 Founders Edition",
+      "cpu": "AMD Ryzen 9 7950X3D",
+      "ram": "64GB DDR5 6400MHz"
+    },
+    "thermals": {
+      "cooler": "EKWB Quantum Reflection",
+      "type": "Custom Loop",
+      "fanCount": 9
+    },
+    "meta": {
+      "availability": "Special Order",
+      "warranty": "3 Year Limited",
+      "buildTime": "14 Days"
+    }
+  },
+  {
+    "id": "SIG-002",
+    "name": "SIGNATURE // CHISATO",
+    "category": "Signature",
+    "price": 3899,
+    "image": "https://xoticpc.com/cdn/shop/files/Y70REUX3DMAIN.png?v=1759502198",
+    "tags": ["Signature", "Overclocked", "Red-Accent", "Pro-Gaming"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4080 Super",
+      "cpu": "Intel Core i9-14900KS",
+      "ram": "32GB DDR5 7200MHz"
+    },
+    "thermals": {
+      "cooler": "ASUS ROG Ryujin III",
+      "type": "Liquid",
+      "fanCount": 6
+    },
+    "meta": {
+      "availability": "Limited",
+      "warranty": "3 Year Limited",
+      "buildTime": "10 Days"
+    }
+  },
+  {
+    "id": "SIG-003",
+    "name": "SIGNATURE // KAGURA",
+    "category": "Signature",
+    "price": 2999,
+    "image": "https://i.imgur.com/4kWc8h7.jpeg",
+    "tags": ["Signature", "Full-AMD", "Black-Out", "Efficiency"],
+    "specs": {
+      "gpu": "AMD Radeon RX 7900 XTX",
+      "cpu": "AMD Ryzen 7 7800X3D",
+      "ram": "32GB DDR5 6000MHz"
+    },
+    "thermals": {
+      "cooler": "Noctua NH-D15 Chromax",
+      "type": "Air",
+      "fanCount": 2
+    },
+    "meta": {
+      "availability": "Limited",
+      "warranty": "3 Year Limited",
+      "buildTime": "7 Days"
+    }
+  },
+  {
+    "id": "SIG-004",
+    "name": "SIGNATURE // MIYAKO",
+    "category": "Signature",
+    "price": 2499,
+    "image": "https://sc04.alicdn.com/kf/H2cadc07ed1314493a7b5d6008049ec41e.jpg",
+    "tags": ["Signature", "Aesthetic", "Pink-Build", "Creator"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4070 Ti Super",
+      "cpu": "Intel Core i7-14700K",
+      "ram": "32GB DDR5 5600MHz"
+    },
+    "thermals": {
+      "cooler": "Lian Li Galahad II LCD",
+      "type": "Liquid",
+      "fanCount": 6
+    },
+    "meta": {
+      "availability": "Limited",
+      "warranty": "3 Year Limited",
+      "buildTime": "7 Days"
+    }
+  },
+  {
+    "id": "SIG-005",
+    "name": "SIGNATURE // ASUKA",
+    "category": "Signature",
+    "price": 4999,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Signature", "Industrial", "Orange-Accent", "Extreme"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4090",
+      "cpu": "Intel Core i9-14900K",
+      "ram": "128GB DDR5 5200MHz"
+    },
+    "thermals": {
+      "cooler": "NZXT Kraken Elite 360",
+      "type": "Liquid",
+      "fanCount": 7
+    },
+    "meta": {
+      "availability": "Special Order",
+      "warranty": "5 Year Premium",
+      "buildTime": "21 Days"
+    }
+  },
+  {
+    "id": "PC-006",
+    "name": "NEBULA STRIKE",
+    "category": "Standard",
+    "price": 1599,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Mid-Range", "1440p"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4070 Super",
+      "cpu": "AMD Ryzen 5 7600X",
+      "ram": "16GB DDR5 5200MHz"
+    },
+    "thermals": {
+      "cooler": "DeepCool AK400",
+      "type": "Air",
+      "fanCount": 4
+    },
+    "meta": { "availability": "In Stock",
+      "warranty": "2 Year Standard",
+      "buildTime": "3 Days"
+    }
+  },
+  {
+    "id": "PC-007",
+    "name": "IRON CLAD",
+    "category": "Standard",
+    "price": 1749,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Stealth", "Value"],
+    "specs": {
+      "gpu": "AMD Radeon RX 7800 XT",
+      "cpu": "Intel Core i5-13600K",
+      "ram": "32GB DDR5 5600MHz"
+    },
+    "thermals": {
+      "cooler": "Be Quiet! Dark Rock 4",
+      "type": "Air",
+      "fanCount": 3
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "2 Year Standard",
+      "buildTime": "3 Days"
+    }
+  },
+  {
+    "id": "PC-008",
+    "name": "TITAN FLOW",
+    "category": "Standard",
+    "price": 1299,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Entry-Level", "Liquid"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4060 Ti",
+      "cpu": "Intel Core i5-14400F",
+      "ram": "16GB DDR5 4800MHz"
+    },
+    "thermals": {
+      "cooler": "Cooler Master MasterLiquid",
+      "type": "Liquid",
+      "fanCount": 5
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "2 Year Standard",
+      "buildTime": "5 Days"
+    }
+  },
+  {
+    "id": "PC-009",
+    "name": "VOID WALKER",
+    "category": "Standard",
+    "price": 2299,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "High-End", "Streaming"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4070 Ti Super",
+      "cpu": "AMD Ryzen 9 7900X",
+      "ram": "32GB DDR5 6000MHz"
+    },
+    "thermals": {
+      "cooler": "Corsair H150i Elite",
+      "type": "Liquid",
+      "fanCount": 6
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "2 Year Standard",
+      "buildTime": "5 Days"
+    }
+  },
+  {
+    "id": "PC-010",
+    "name": "STORM BREAKER",
+    "category": "Standard",
+    "price": 899,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Budget", "1080p"],
+    "specs": {
+      "gpu": "AMD Radeon RX 7600",
+      "cpu": "AMD Ryzen 5 5600",
+      "ram": "16GB DDR4 3200MHz"
+    },
+    "thermals": {
+      "cooler": "Stock Cooler",
+      "type": "Air",
+      "fanCount": 1
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "1 Year Standard",
+      "buildTime": "2 Days"
+    }
+  },
+  {
+    "id": "PC-011",
+    "name": "QUARTZ EDGE",
+    "category": "Standard",
+    "price": 2699,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "White-Build", "Gaming"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4080 Super",
+      "cpu": "Intel Core i7-13700K",
+      "ram": "32GB DDR5 6000MHz"
+    },
+    "thermals": {
+      "cooler": "Arctic Liquid Freezer II",
+      "type": "Liquid",
+      "fanCount": 6
+    },
+    "meta": {
+      "availability": "Out of Stock",
+      "warranty": "2 Year Standard",
+      "buildTime": "7 Days"
+    }
+  },
+  {
+    "id": "PC-012",
+    "name": "CARBON PULSE",
+    "category": "Standard",
+    "price": 1049,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Compact", "Efficiency"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4060",
+      "cpu": "AMD Ryzen 7 5700X",
+      "ram": "16GB DDR4 3600MHz"
+    },
+    "thermals": {
+      "cooler": "ID-COOLING SE-224-XTS",
+      "type": "Air",
+      "fanCount": 2
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "2 Year Standard",
+      "buildTime": "3 Days"
+    }
+  },
+  {
+    "id": "PC-013",
+    "name": "OMEGA POINT",
+    "category": "Standard",
+    "price": 2899,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Workstation", "Full-AMD"],
+    "specs": {
+      "gpu": "AMD Radeon RX 7900 XT",
+      "cpu": "AMD Ryzen 9 7950X",
+      "ram": "64GB DDR5 5600MHz"
+    },
+    "thermals": {
+      "cooler": "Phanteks Glacier One",
+      "type": "Liquid",
+      "fanCount": 6
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "3 Year Extended",
+      "buildTime": "10 Days"
+    }
+  },
+  {
+    "id": "PC-014",
+    "name": "LUNAR SHADOW",
+    "category": "Standard",
+    "price": 1699,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Aesthetic", "Value"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4070",
+      "cpu": "Intel Core i5-14600K",
+      "ram": "32GB DDR5 5200MHz"
+    },
+    "thermals": {
+      "cooler": "Thermalright Peerless Assassin",
+      "type": "Air",
+      "fanCount": 2
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "2 Year Standard",
+      "buildTime": "4 Days"
+    }
+  },
+  {
+    "id": "PC-015",
+    "name": "FROST BITE",
+    "category": "Standard",
+    "price": 1549,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Ice-White", "Mid-Range"],
+    "specs": {
+      "gpu": "AMD Radeon RX 7700 XT",
+      "cpu": "AMD Ryzen 7 7700X",
+      "ram": "32GB DDR5 5600MHz"
+    },
+    "thermals": {
+      "cooler": "MSI Mag CoreLiquid",
+      "type": "Liquid",
+      "fanCount": 3
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "2 Year Standard",
+      "buildTime": "5 Days"
+    }
+  },
+  {
+    "id": "PC-016",
+    "name": "COBALT CORE",
+    "category": "Standard",
+    "price": 799,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Entry", "Budget"],
+    "specs": {
+      "gpu": "NVIDIA RTX 3060",
+      "cpu": "Intel Core i3-13100F",
+      "ram": "16GB DDR4 3200MHz"
+    },
+    "thermals": {
+      "cooler": "DeepCool AG300",
+      "type": "Air",
+      "fanCount": 2
+    },
+    "meta": {
+      "availability": "Low Stock",
+      "warranty": "1 Year Standard",
+      "buildTime": "2 Days"
+    }
+  },
+  {
+    "id": "PC-017",
+    "name": "ZENITH ONE",
+    "category": "Standard",
+    "price": 4299,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Extreme", "Power"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4090",
+      "cpu": "AMD Ryzen 9 7950X",
+      "ram": "64GB DDR5 6000MHz"
+    },
+    "thermals": {
+      "cooler": "Thermaltake TH420",
+      "type": "Liquid",
+      "fanCount": 7
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "3 Year Extended",
+      "buildTime": "12 Days"
+    }
+  },
+  {
+    "id": "PC-018",
+    "name": "MANTIS RIG",
+    "category": "Standard",
+    "price": 1899,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Quiet", "Green-Build"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4070 Super",
+      "cpu": "Intel Core i7-14700",
+      "ram": "32GB DDR5 5600MHz"
+    },
+    "thermals": {
+      "cooler": "Scythe Fuma 3",
+      "type": "Air",
+      "fanCount": 3
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "2 Year Standard",
+      "buildTime": "4 Days"
+    }
+  },
+  {
+    "id": "PC-019",
+    "name": "VULCAN DRIVE",
+    "category": "Standard",
+    "price": 1999,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Pure-Gaming", "Optimized"],
+    "specs": {
+      "gpu": "AMD Radeon RX 7900 GRE",
+      "cpu": "AMD Ryzen 7 7800X3D",
+      "ram": "32GB DDR5 6000MHz"
+    },
+    "thermals": {
+      "cooler": "Be Quiet! Shadow Rock 3",
+      "type": "Air",
+      "fanCount": 3
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "2 Year Standard",
+      "buildTime": "4 Days"
+    }
+  },
+  {
+    "id": "PC-020",
+    "name": "STEEL SHREDDER",
+    "category": "Standard",
+    "price": 1149,
+    "image": "https://media.mifcom.ch/743e70e7-2f8c-4e51-86aa-7df11b772964/https://assets.mifcom.ch/images/Products/31581/1?speedsize=w_1000",
+    "tags": ["Standard", "Industrial", "Value"],
+    "specs": {
+      "gpu": "NVIDIA RTX 4060 Ti",
+      "cpu": "Intel Core i5-12400F",
+      "ram": "16GB DDR4 3200MHz"
+    },
+    "thermals": {
+      "cooler": "Cooler Master Hyper 212",
+      "type": "Air",
+      "fanCount": 2
+    },
+    "meta": {
+      "availability": "In Stock",
+      "warranty": "2 Year Standard",
+      "buildTime": "3 Days"
+    }
+  }
+]
