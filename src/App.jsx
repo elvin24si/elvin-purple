@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import React, { Suspense } from 'react';
 
@@ -14,16 +13,19 @@ const Custom = React.lazy(() => import("./pages/Custom"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
 const Forgot = React.lazy(() => import("./pages/auth/Forgot"));
+const Dashboard = React.lazy(() => import("./pages/Dashboard"));
+const Inventory = React.lazy(() => import("./pages/Inventory"));
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <Suspense fallback={<Loading />}>
     <Routes>
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Catalog />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/custom" element={<Custom />} />
+        <Route path="/catalog" element={<Catalog />} />
+        <Route path="/inventory" element={<Inventory />} />
       </Route>
 
       <Route element={<AuthLayout/>}>

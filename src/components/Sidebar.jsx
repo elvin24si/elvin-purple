@@ -24,6 +24,16 @@ export default function Sidebar() {
                 <ul className="space-y-3">
                     <li>
                         <NavLink to="/" className={menuClass}>
+                            Dashboard
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/inventory" className={menuClass}>
+                            Inventory
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/catalog" className={menuClass}>
                             Catalog
                         </NavLink>
                     </li>
