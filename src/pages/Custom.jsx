@@ -1,3 +1,6 @@
+import InputField from "../components/form/InputField";
+import TextAreaField from "../components/form/TextAreaField";
+
 export default function Custom() {
     return (
         <div className="max-w-2xl mx-auto py-10 animate-in fade-in duration-700">
@@ -14,38 +17,20 @@ export default function Custom() {
             </header>
 
             <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-                {/* Email Input */}
-                <div className="space-y-2">
-                    <label
-                        className="text-[10px] uppercase tracking-widest text-slate-400 font-bold"
-                        htmlFor="email"
-                    >
-                        Contact Email
-                    </label>
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="JohnDoe@gmail.com"
-                        className="w-full bg-white border border-slate-200 p-4 text-sm outline-none focus:border-indigo-500 transition-colors rounded-sm"
-                    />
-                </div>
+                {/* 1. Contact Email menggunakan InputField Component */}
+                <InputField 
+                    id="email"
+                    type="email"
+                    label="Contact Email"
+                    placeholder="JohnDoe@gmail.com"
+                />
 
-                {/* Project Brief */}
-                <div className="space-y-2">
-                    <label
-                        className="text-[10px] uppercase tracking-widest text-slate-400 font-bold"
-                        htmlFor="brief"
-                    >
-                        Description
-                    </label>
-                    <textarea
-                        id="brief"
-                        rows="6"
-                        placeholder="Describe your intended use case (e.g., 4K Video Editing, 4K Streaming, 4K Gaming, LLM Training, etc.) and your preferred aesthetics."
-                        className="w-full bg-white border border-slate-200 p-4 text-sm outline-none focus:border-indigo-500 transition-colors rounded-sm resize-none"
-                    ></textarea>
-                </div>
-
+                {/* 2. Project Brief menggunakan TextAreaField Component */}
+                <TextAreaField 
+                    id="brief"
+                    label="Description"
+                    placeholder="Describe your intended use case (e.g., 4K Video Editing, 4K Streaming, 4K Gaming, LLM Training, etc.) and your preferred aesthetics."
+                />
 
                 <button
                     type="button"

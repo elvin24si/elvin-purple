@@ -32,7 +32,7 @@ export default function Forgot() {
             </form>
 
             <p className="mt-8 text-center text-[11px] text-slate-500 uppercase tracking-widest">
-                Remembered? <Link to="/login" className="text-indigo-600 font-bold hover:underline">Back to Login</Link>
+                Already Have an Account? <Link to="/login" className="text-indigo-600 font-bold hover:underline">Back to Login</Link>
             </p>
         </div>
     );

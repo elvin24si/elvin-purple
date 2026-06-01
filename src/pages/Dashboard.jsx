@@ -1,68 +1,43 @@
 import pcData from "../assets/PCList.json";
 import StatCard from "../components/dashboard/StatCard";
 import ActivityTable from "../components/dashboard/ActivityTable";
-import CRMNotes from "../components/dashboard/CRMNotes"; // New Component
+import CRMNotes from "../components/dashboard/CRMNotes";
+import DashboardHeader from "../components/dashboard/DashboardHeader"; // Import Baru
+import SlaTracker from "../components/dashboard/SlaTracker";         // Import Baru
 
 export default function Dashboard() {
-    // CRM Metrics
-    const totalClients = 142; // Example static total
+    // CRM Metrics Logic
+    const totalClients = 142;
     const pendingTickets = 5;
     const avgSatisfaction = "4.9/5";
-    const conversionRate = "12.4%";
 
-    // Logistics & Value
+    // Logistics & Value Logic
     const totalInventoryValue = pcData.reduce((acc, pc) => acc + pc.price, 0);
     const premiumBuilds = pcData.filter(pc => pc.price > 4000);
 
+    const handleCreateTicket = () => {
+        alert("Support Ticket Created!"); // Ganti dengan fungsi aslimu nanti
+    };
+
     return (
         <div className="max-w-7xl mx-auto px-6 py-10 space-y-8 bg-slate-50/30">
-            {/* Header with Quick Action */}
-            <div className="flex flex-col md:flex-row justify-between items-start gap-4 border-b border-slate-200 pb-6">
-                <div>
-                    <h1 className="text-4xl font-extrabold text-slate-900">Executive CRM</h1>
-                    <p className="text-lg text-slate-500 mt-1">Client relations and high-value fulfillment tracking.</p>
-                </div>
-                <button className="bg-gradient-to-br from-purple-600 to-indigo-300 border-transparent text-white px-4 py-2 rounded text-xs font-bold uppercase tracking-wider hover:bg-indigo-700 transition-colors">
-                    Create Support Ticket
-                </button>
-            </div>
+            {/* 1. Header Component */}
+            <DashboardHeader 
+                title="Executive CRM"
+                description="Client relations and high-value fulfillment tracking."
+                actionLabel="Create Support Ticket"
+                onActionClick={handleCreateTicket}
+            />
 
-            {/* CRM Stat Cards */}
+            {/* 2. CRM Stat Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* This is the ONLY one with the gradient prop */}
-                <StatCard
-                    label="Active Clients"
-                    value={totalClients}
-                    change="Last Month: 136"
-                    isPositive={true}
-                    isProminent={true}
-                />
-
-                <StatCard
-                    label="CSAT Score"
-                    value={avgSatisfaction}
-                    change="Last Month: 4.8"
-                    isPositive={true}
-                    isStable={true}
-                />
-
-                <StatCard
-                    label="Pending Tickets"
-                    value={pendingTickets}
-                    change="Last Month: 5"
-                    isPositive={false}
-                    isStable={false}
-                />
-
-                <StatCard
-                    label="Pipeline Value"
-                    value={`$${(totalInventoryValue * 0.8).toLocaleString()}`}
-                    change="Last Month: $12,000"
-                    isPositive={true}
-                    isStable={true}
-                />
+                <StatCard label="Active Clients" value={totalClients} change="Last Month: 136" isPositive={true} isProminent={true} />
+                <StatCard label="CSAT Score" value={avgSatisfaction} change="Last Month: 4.8" isPositive={true} isStable={true} />
+                <StatCard label="Pending Tickets" value={pendingTickets} change="Last Month: 5" isPositive={false} isStable={false} />
+                <StatCard label="Pipeline Value" value={`$${(totalInventoryValue * 0.8).toLocaleString()}`} change="Last Month: $12,000" isPositive={true} isStable={true} />
             </div>
 
+            {/* 3. Main Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Fulfillment Status (Table) */}
                 <div className="lg:col-span-2 bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden">
@@ -73,33 +48,15 @@ export default function Dashboard() {
                     <ActivityTable data={premiumBuilds} />
                 </div>
 
-                {/* New CRM Sidebar: Interaction Feed */}
+                {/* Sidebar Column */}
                 <div className="space-y-6">
                     <div className="bg-white border border-slate-200 rounded-lg shadow-sm p-6">
                         <h3 className="text-xl font-bold text-slate-800 mb-4">Client Interactions</h3>
                         <CRMNotes />
                     </div>
 
-                    {/* Warranty/SLA Tracker */}
-                    <div className="bg-slate-900 rounded-lg p-6 text-white shadow-xl">
-                        <h3 className="text-xl font-bold uppercase tracking-widest text-indigo-400 mb-4">SLA Compliance</h3>
-                        <div className="space-y-4">
-                            <div>
-                                <div className="flex justify-between text-[10px] mb-1 font-bold">
-                                    <span>BUILD ACCURACY</span>
-                                    <span>100%</span>
-                                </div>
-                                <div className="w-full bg-slate-800 h-1 rounded-full"><div className="bg-indigo-500 w-full h-full" /></div>
-                            </div>
-                            <div>
-                                <div className="flex justify-between text-[10px] mb-1 font-bold">
-                                    <span>ON-TIME DELIVERY</span>
-                                    <span>92%</span>
-                                </div>
-                                <div className="w-full bg-slate-800 h-1 rounded-full"><div className="bg-indigo-500 w-[92%] h-full" /></div>
-                            </div>
-                        </div>
-                    </div>
+                    {/* 4. SLA Tracker Component */}
+                    <SlaTracker />
                 </div>
             </div>
         </div>
