@@ -1,6 +1,6 @@
 import { useState } from "react";
 import pcData from "../assets/PCList.json";
-import InventoryRow from "../components/inventory/InventoryRow"; // Import komponen baru
+import InventoryRow from "../components/inventory/InventoryRow";
 
 export default function Inventory() {
     const [searchTerm, setSearchTerm] = useState("");
