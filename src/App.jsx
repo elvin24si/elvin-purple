@@ -14,7 +14,7 @@ const Login = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
 const Forgot = React.lazy(() => import("./pages/auth/Forgot"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
-const MemberDashboard = React.lazy(() => import("./pages/member/Dashboard"));
+const MemberDashboard = React.lazy(() => import("./pages/member/MemberDashboard"));
 const Inventory = React.lazy(() => import("./pages/Inventory"));
 
 function App() {
