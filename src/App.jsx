@@ -24,6 +24,7 @@ function App() {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/member" element={<MemberDashboard />} />
         <Route path="/custom" element={<Custom />} />
         <Route path="/catalog" element={<Catalog />} />
         <Route path="/inventory" element={<Inventory />} />
@@ -34,10 +35,6 @@ function App() {
             <Route path="/register" element={<Register/>} />
             <Route path="/forgot" element={<Forgot/>} />
         </Route>
-
-      <Route element={<MemberLayout />}>
-        <Route path="/member" element={<MemberDashboard />} />
-      </Route>
 
     </Routes>
     </Suspense>
