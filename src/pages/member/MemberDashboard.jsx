@@ -8,17 +8,20 @@ import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-// Custom Components (Reusing your layout style cards)
+// Custom Components
 import StatCard from "@/components/dashboard/StatCard";
 
 export default function MemberDashboard() {
-  // Hardcoded for demo/current context: Imagine this is the logged-in user's profile
   const clientName = "Acme Corp";
   
-  // Filter builds specific to this client from your central pcData array
-  const userBuilds = pcData.filter(pc => pc.clientName === clientName);
+  // 1. FILTER LOGIC: Find client builds, fallback to premium catalog items if empty
+  const customOrders = pcData.filter(pc => pc.clientName === clientName);
   
-  // Summary calculations for the member
+  const userBuilds = customOrders.length > 0 
+    ? customOrders 
+    : pcData.filter(pc => pc.price > 4000).slice(0, 2); // Pulls top 2 rigs as active mock orders
+
+  // Summary calculations based on active portfolio
   const activeBuildsCount = userBuilds.length;
   const totalInvested = userBuilds.reduce((acc, pc) => acc + pc.price, 0);
 
@@ -72,8 +75,9 @@ export default function MemberDashboard() {
             <Table>
               <TableHeader>
                 <TableRow className="bg-slate-50/50">
-                  <TableHead className="w-[100px] font-semibold">Build ID</TableHead>
+                  <TableHead className="w-[120px] font-semibold">Build ID</TableHead>
                   <TableHead className="font-semibold">System Configuration</TableHead>
+                  <TableHead className="font-semibold">Core Components</TableHead>
                   <TableHead className="font-semibold">Status</TableHead>
                   <TableHead className="text-right font-semibold">MSRP</TableHead>
                 </TableRow>
@@ -82,20 +86,22 @@ export default function MemberDashboard() {
                 {userBuilds.length > 0 ? (
                   userBuilds.map((pc, idx) => (
                     <TableRow key={pc.id || idx}>
-                      <TableCell className="font-medium text-slate-600">#{pc.id || idx + 101}</TableCell>
-                      <TableCell className="font-medium">{pc.name || "Custom Rig Layout"}</TableCell>
+                      <TableCell className="font-medium text-slate-600">{pc.id}</TableCell>
+                      <TableCell className="font-bold text-slate-900">{pc.name}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">
+                        {pc.specs?.cpu} / {pc.specs?.gpu}
+                      </TableCell>
                       <TableCell>
-                        {/* Dynamic or Mock status pill depending on what's available in your JSON structure */}
-                        <Badge variant="secondary" className="bg-amber-50 text-amber-700 border border-amber-200 font-medium text-xs">
-                          {pc.status || "Assembling Components"}
+                        <Badge variant="secondary" className="bg-amber-50 text-amber-700 border border-amber-200 font-medium text-xs whitespace-nowrap">
+                          {pc.status || "Fluid Testing"}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-right font-semibold text-slate-900">${pc.price.toLocaleString()}</TableCell>
+                      <TableCell className="text-right font-semibold text-emerald-600">${pc.price.toLocaleString()}</TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={4} className="text-center text-muted-foreground py-12">
+                    <TableCell colSpan={5} className="text-center text-muted-foreground py-12">
                       <p className="text-sm">You don't have any builds in production right now.</p>
                       <a href="/custom" className="text-indigo-600 hover:underline text-xs mt-1 inline-block">Commission your first build →</a>
                     </TableCell>
