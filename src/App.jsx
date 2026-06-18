@@ -14,6 +14,7 @@ const Login = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
 const Forgot = React.lazy(() => import("./pages/auth/Forgot"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
+const MemberDashboard = React.lazy(() => import("./pages/member/Dashboard"));
 const Inventory = React.lazy(() => import("./pages/Inventory"));
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/member" element={<MemberDashboard />} />
         <Route path="/custom" element={<Custom />} />
         <Route path="/catalog" element={<Catalog />} />
         <Route path="/inventory" element={<Inventory />} />
