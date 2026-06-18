@@ -9,7 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 // Custom Components (Reusing your layout style cards)
-import StatCard from "../components/dashboard/StatCard";
+import StatCard from ".../components/dashboard/StatCard";
 
 export default function MemberDashboard() {
   // Hardcoded for demo/current context: Imagine this is the logged-in user's profile
