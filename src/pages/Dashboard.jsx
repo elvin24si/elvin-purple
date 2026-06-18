@@ -1,38 +1,87 @@
+import { useState, useEffect } from "react"; // 1. Import hooks yang diperlukan
 import pcData from "../assets/PCList.json";
 
-// Shadcn UI Imports
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-// Custom Components
 import StatCard from "../components/dashboard/StatCard";
 
 export default function Dashboard() {
-  const totalClients = 142;
-  const pendingTickets = 5;
-  const avgSatisfaction = "4.9/5";
+  // 2. Siapkan State untuk menampung data yang akan berubah/diambil dari API
+  const [stats, setStats] = useState({
+    totalClients: 142,
+    pendingTickets: 5,
+    avgSatisfaction: "4.9/5",
+  });
+  const [premiumBuilds, setPremiumBuilds] = useState([]);
+  const [totalInventoryValue, setTotalInventoryValue] = useState(0);
+  const [isLoading, setIsLoading] = useState(true); // Fitur Baru: Status Loading
 
-  // Logistics & Value Logic
-  const totalInventoryValue = pcData.reduce((acc, pc) => acc + pc.price, 0);
-  const premiumBuilds = pcData.filter(pc => pc.price > 4000);
+  // 3. USEEFFECT 1: Mengambil & mengkalkulasi data pertama kali (Simulasi API Fetching)
+  useEffect(() => {
+    // Kita simulasikan loading jaringan selama 1 detik
+    const timer = setTimeout(() => {
+      const totalValue = pcData.reduce((acc, pc) => acc + pc.price, 0);
+      const filteredPremium = pcData.filter(pc => pc.price > 4000);
+
+      setTotalInventoryValue(totalValue);
+      setPremiumBuilds(filteredPremium);
+      setIsLoading(false); // Matikan loading setelah data siap
+    }, 1000);
+
+    return () => clearTimeout(timer); // Cleanup function untuk membersihkan timer
+  }, []); // Array kosong [] artinya ini hanya berjalan 1x pas halaman dibuka
+
+  // 4. USEEFFECT 2: Fitur Baru (Auto-Refresh / Polling untuk Jumlah Tiket)
+  useEffect(() => {
+    // Jalankan interval setiap 5 detik untuk mensimulasikan tiket baru masuk/selesai
+    const interval = setInterval(() => {
+      setStats((prev) => {
+        // Simulasi naik turunnya tiket acak antara 3 sampai 8
+        const randomTickets = Math.floor(Math.random() * 6) + 3;
+        return {
+          ...prev,
+          pendingTickets: randomTickets
+        };
+      });
+      console.log("Dashboard data auto-refreshed!"); // Bukti di console kalau useEffect bekerja
+    }, 5000);
+
+    return () => clearInterval(interval); // Kunci Penting! Bersihkan interval saat user pindah halaman
+  }, []);
+
+  // Tampilan Antarmuka saat Loading
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-slate-50">
+        <p className="text-lg font-medium text-slate-500 animate-pulse">Loading Executive CRM Intelligence...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10 space-y-8 bg-slate-50/30 min-h-screen">
       
-      {/* 1. CLEAN HEADER (No Ticket Creation Button/Dialog) */}
-      <div className="border-b pb-5">
-        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Executive CRM</h1>
-        <p className="text-sm text-muted-foreground mt-1">Client relations and high-value fulfillment tracking.</p>
+      {/* 1. CLEAN HEADER */}
+      <div className="border-b pb-5 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Executive CRM</h1>
+          <p className="text-sm text-muted-foreground mt-1">Client relations and high-value fulfillment tracking.</p>
+        </div>
+        {/* Indikator Fitur Baru */}
+        <Badge variant="outline" className="text-emerald-600 bg-emerald-50 border-emerald-200 animate-pulse">
+          ● Live Sync Active
+        </Badge>
       </div>
 
-      {/* 2. CRM STAT CARDS */}
+      {/* 2. CRM STAT CARDS (Menggunakan data dari state yang dinamis) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard label="Active Clients" value={totalClients} change="Last Month: 136" isPositive={true} isProminent={true} />
-        <StatCard label="CSAT Score" value={avgSatisfaction} change="Last Month: 4.8" isPositive={true} isStable={true} />
-        <StatCard label="Pending Tickets" value={pendingTickets} change="Last Month: 5" isPositive={false} isStable={false} />
+        <StatCard label="Active Clients" value={stats.totalClients} change="Last Month: 136" isPositive={true} isProminent={true} />
+        <StatCard label="CSAT Score" value={stats.avgSatisfaction} change="Last Month: 4.8" isPositive={true} isStable={true} />
+        <StatCard label="Pending Tickets" value={stats.pendingTickets} change="Last Month: 5" isPositive={stats.pendingTickets < 5} isStable={false} />
         <StatCard label="Pipeline Value" value={`$${(totalInventoryValue * 0.8).toLocaleString()}`} change="Last Month: $12,000" isPositive={true} isStable={true} />
       </div>
 
@@ -85,7 +134,6 @@ export default function Dashboard() {
         {/* Right Side: Sidebar Column */}
         <div className="space-y-6">
           
-          {/* CRM Notes Component using Shadcn Card & ScrollArea */}
           <Card className="shadow-sm border-slate-200">
             <CardHeader className="pb-3">
               <CardTitle className="text-xl font-bold text-slate-800">Client Interactions</CardTitle>
@@ -106,16 +154,12 @@ export default function Dashboard() {
                     <p className="text-xs text-muted-foreground font-medium">June 9, 2026</p>
                     <p className="text-sm font-medium">Follow-up call with Oscorp regarding recurring order contracts finalized.</p>
                   </div>
-                  <div className="border-l-2 border-slate-300 pl-3 py-1 space-y-1">
-                    <p className="text-xs text-muted-foreground font-medium">June 8, 2026</p>
-                    <p className="text-sm font-medium">Initial specs discovery meeting with Cyberdyne Systems.</p>
-                  </div>
                 </div>
               </ScrollArea>
             </CardContent>
           </Card>
 
-          {/* SLA Tracker Component using Shadcn Card & Progress */}
+          {/* SLA Tracker */}
           <Card className="shadow-sm border-slate-200">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg font-bold text-slate-800">SLA Performance</CardTitle>

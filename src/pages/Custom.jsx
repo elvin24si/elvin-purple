@@ -1,7 +1,43 @@
+import { useRef, useEffect } from "react"; // 1. Import useRef dan useEffect
 import InputField from "../components/form/InputField";
 import TextAreaField from "../components/form/TextAreaField";
 
 export default function Custom() {
+    // 2. Buat reference untuk masing-masing input
+    const emailRef = useRef(null);
+    const briefRef = useRef(null);
+
+    // 3. FITUR: Auto-focus ke input email saat halaman terbuka
+    useEffect(() => {
+        if (emailRef.current) {
+            emailRef.current.focus();
+        }
+    }, []);
+
+    // 4. Handle Submit Form
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Mencegah halaman reload
+
+        // Mengambil data langsung dari DOM via useRef
+        const emailValue = emailRef.current.value;
+        const briefValue = briefRef.current.value;
+
+        // Validasi sederhana
+        if (!emailValue || !briefValue) {
+            alert("Harap isi semua kolom!");
+            return;
+        }
+
+        console.log("Data dikirim ke server:", {
+            email: emailValue,
+            brief: briefValue
+        });
+
+        // OPSI: Reset form setelah submit
+        emailRef.current.value = "";
+        briefRef.current.value = "";
+    };
+
     return (
         <div className="max-w-2xl mx-auto py-10 animate-in fade-in duration-700">
             <header className="mb-12">
@@ -16,24 +52,28 @@ export default function Custom() {
                 </p>
             </header>
 
-            <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-                {/* 1. Contact Email menggunakan InputField Component */}
+            {/* Pindahkan handleSubmit ke tag form onSubmit */}
+            <form className="space-y-8" onSubmit={handleSubmit}>
+                
+                {/* 5. Pasang prop ref ke komponen kustom */}
                 <InputField 
+                    ref={emailRef} 
                     id="email"
                     type="email"
                     label="Contact Email"
                     placeholder="JohnDoe@gmail.com"
                 />
 
-                {/* 2. Project Brief menggunakan TextAreaField Component */}
                 <TextAreaField 
+                    ref={briefRef}
                     id="brief"
                     label="Description"
                     placeholder="Describe your intended use case (e.g., 4K Video Editing, 4K Streaming, 4K Gaming, LLM Training, etc.) and your preferred aesthetics."
                 />
 
+                {/* Ubah type menjadi "submit" agar memicu onSubmit pada form */}
                 <button
-                    type="button"
+                    type="submit"
                     className="w-full bg-slate-900 text-white text-[11px] font-bold uppercase tracking-[0.2em] py-5 hover:bg-indigo-600 transition-colors duration-300"
                 >
                     Submit Custom Request

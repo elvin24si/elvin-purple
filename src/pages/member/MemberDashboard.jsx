@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // 1. Import useEffect dan useState
 import pcData from "@/assets/PCList.json";
 
 // Shadcn UI Imports
@@ -14,14 +14,57 @@ import StatCard from "@/components/dashboard/StatCard";
 export default function MemberDashboard() {
   const clientName = "Acme Corp";
   
-  // 1. FILTER LOGIC: Find client builds, fallback to premium catalog items if empty
-  const customOrders = pcData.filter(pc => pc.clientName === clientName);
+  // --- STRATEGI STATE & USEEFFECT ---
   
+  // State untuk menyimpan progress simulasi live
+  const [fluidProgress, setFluidProgress] = useState(45);
+  const [logs, setLogs] = useState([
+    { id: 1, time: "Today at 2:15 PM", text: "Custom GPU liquid cooling loop routing initiated." },
+    { id: 2, time: "June 16, 2026", text: "Motherboard, RAM, and storage blocks validated on testbench." },
+    { id: 3, time: "June 15, 2026", text: "Premium chassis allocation completed & custom paint prepped." }
+  ]);
+
+  // PENERAPAN USEEFFECT 1: Untuk simulasi update data live (Interval)
+  useEffect(() => {
+    // Membuat interval untuk menaikkan progress bar setiap 4 detik
+    const interval = setInterval(() => {
+      setFluidProgress((prevProgress) => {
+        if (prevProgress >= 100) {
+          clearInterval(interval); // Hentikan jika sudah 100%
+          return 100;
+        }
+        
+        // Tambah progress secara acak antara 5 sampai 15 persen
+        const newProgress = prevProgress + Math.floor(Math.random() * 10) + 5;
+        
+        // FITUR BARU: Tambah log otomatis ke Engineering Log jika progress naik
+        if (newProgress > prevProgress) {
+          setLogs((prevLogs) => [
+            {
+              id: Date.now(),
+              time: "Just Now",
+              text: `Fluid dynamics pressure optimization reached ${Math.min(newProgress, 100)}%.`
+            },
+            ...prevLogs
+          ]);
+        }
+        
+        return Math.min(newProgress, 100);
+      });
+    }, 4000); // Berjalan setiap 4000ms (4 detik)
+
+    // CLEANUP FUNCTION: Menghapus interval jika user pindah halaman agar tidak bocor (memory leak)
+    return () => clearInterval(interval);
+  }, []); // Array kosong berarti hanya berjalan 1x saat komponen dipasang
+
+  // ------------------------------------
+
+  // FILTER LOGIC (Tetap dihitung langsung)
+  const customOrders = pcData.filter(pc => pc.clientName === clientName);
   const userBuilds = customOrders.length > 0 
     ? customOrders 
-    : pcData.filter(pc => pc.price > 4000).slice(0, 2); // Pulls top 2 rigs as active mock orders
+    : pcData.filter(pc => pc.price > 4000).slice(0, 2);
 
-  // Summary calculations based on active portfolio
   const activeBuildsCount = userBuilds.length;
   const totalInvested = userBuilds.reduce((acc, pc) => acc + pc.price, 0);
 
@@ -35,16 +78,10 @@ export default function MemberDashboard() {
           <p className="text-sm text-muted-foreground mt-1">Track your premium builds, order milestones, and custom commissions.</p>
         </div>
         <div className="flex gap-3">
-          <a 
-            href="/catalog" 
-            className="px-4 py-2 border border-slate-200 rounded-md text-sm font-medium hover:bg-slate-100 transition-colors"
-          >
+          <a href="/catalog" className="px-4 py-2 border border-slate-200 rounded-md text-sm font-medium hover:bg-slate-100 transition-colors">
             Browse Catalog
           </a>
-          <a 
-            href="/custom" 
-            className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors shadow-sm"
-          >
+          <a href="/custom" className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors shadow-sm">
             Commission New Build
           </a>
         </div>
@@ -67,7 +104,7 @@ export default function MemberDashboard() {
               <CardTitle className="text-xl font-bold text-slate-800">Your Build Pipeline</CardTitle>
               <CardDescription>Live tracking status of systems undergoing assembly</CardDescription>
             </div>
-            <Badge variant="outline" className="text-[10px] tracking-wider uppercase font-semibold text-indigo-600 border-indigo-200 bg-indigo-50/50 px-2.5 py-0.5">
+            <Badge variant="outline" className="text-[10px] tracking-wider uppercase font-semibold text-indigo-600 border-indigo-200 bg-indigo-50/50 px-2.5 py-0.5 animate-pulse">
               Live Updates
             </Badge>
           </CardHeader>
@@ -92,8 +129,8 @@ export default function MemberDashboard() {
                         {pc.specs?.cpu} / {pc.specs?.gpu}
                       </TableCell>
                       <TableCell>
-                        <Badge variant="secondary" className="bg-amber-50 text-amber-700 border border-amber-200 font-medium text-xs whitespace-nowrap">
-                          {pc.status || "Fluid Testing"}
+                        <Badge variant="secondary" className={`${fluidProgress === 100 ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'} font-medium text-xs whitespace-nowrap`}>
+                          {fluidProgress === 100 ? "Ready for Shipping" : pc.status || "Fluid Testing"}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right font-semibold text-emerald-600">${pc.price.toLocaleString()}</TableCell>
@@ -124,18 +161,13 @@ export default function MemberDashboard() {
             <CardContent>
               <ScrollArea className="h-[200px] pr-4">
                 <div className="space-y-4">
-                  <div className="border-l-2 border-indigo-600 pl-3 py-1 space-y-1">
-                    <p className="text-xs text-muted-foreground font-medium">Today at 2:15 PM</p>
-                    <p className="text-sm font-medium text-slate-800">Custom GPU liquid cooling loop routing initiated.</p>
-                  </div>
-                  <div className="border-l-2 border-slate-200 pl-3 py-1 space-y-1">
-                    <p className="text-xs text-muted-foreground font-medium">June 16, 2026</p>
-                    <p className="text-sm font-medium text-slate-600">Motherboard, RAM, and storage blocks validated on testbench.</p>
-                  </div>
-                  <div className="border-l-2 border-slate-200 pl-3 py-1 space-y-1">
-                    <p className="text-xs text-muted-foreground font-medium">June 15, 2026</p>
-                    <p className="text-sm font-medium text-slate-600">Premium chassis allocation completed & custom paint prepped.</p>
-                  </div>
+                  {/* Render Logs secara dinamis dari State */}
+                  {logs.map((log) => (
+                    <div key={log.id} className={`border-l-2 ${log.time === "Just Now" ? "border-indigo-600" : "border-slate-200"} pl-3 py-1 space-y-1 transition-all duration-500`}>
+                      <p className={`text-xs font-medium ${log.time === "Just Now" ? "text-indigo-600" : "text-muted-foreground"}`}>{log.time}</p>
+                      <p className={`text-sm font-medium ${log.time === "Just Now" ? "text-slate-900" : "text-slate-600"}`}>{log.text}</p>
+                    </div>
+                  ))}
                 </div>
               </ScrollArea>
             </CardContent>
@@ -159,9 +191,10 @@ export default function MemberDashboard() {
               <div className="space-y-2">
                 <div className="flex justify-between text-xs font-medium">
                   <span>Fluid Dynamics & Stress Validation</span>
-                  <span className="text-indigo-600 font-semibold">45%</span>
+                  <span className={`font-semibold ${fluidProgress === 100 ? 'text-emerald-600' : 'text-indigo-600'}`}>{fluidProgress}%</span>
                 </div>
-                <Progress value={45} className="h-2 bg-slate-100" />
+                {/* Menggunakan state fluidProgress yang dinamis dari useEffect */}
+                <Progress value={fluidProgress} className="h-2 bg-slate-100 transition-all duration-500" />
               </div>
             </CardContent>
           </Card>
