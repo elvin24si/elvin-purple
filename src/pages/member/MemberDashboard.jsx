@@ -1,6 +1,7 @@
 // src/pages/member/MemberDashboard.jsx
 import { useState, useEffect } from "react";
 import pcData from "@/assets/PCList.json";
+import { useNavigate } from "react-router-dom";
 
 // Shadcn UI Imports
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -13,7 +14,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import StatCard from "@/components/dashboard/StatCardMember";
 
 export default function MemberDashboard() {
-  const clientName = "Jason Vorhees";
+  const navigate = useNavigate();
+  const [clientName, setClientName] = useState("Guest");
 
   const [fluidProgress, setFluidProgress] = useState(45);
   const [logs, setLogs] = useState([
@@ -22,6 +24,24 @@ export default function MemberDashboard() {
     { id: 3, time: "June 15, 2026", text: "Premium chassis allocation completed & custom paint prepped." }
   ]);
 
+  useEffect(() => {
+    // 1. Fetch the stringified user data from storage
+    const savedUser = localStorage.getItem("current_user");
+    
+    if (savedUser) {
+      try {
+        const user = JSON.parse(savedUser);
+        // 2. Fallback gracefully: use username if it exists, otherwise email, otherwise 'User'
+        setClientName(user.username || user.email || "User");
+      } catch (e) {
+        console.error("Error parsing user data", e);
+      }
+    } else {
+      // Optional: Redirect back to login if no active session is found
+      navigate("/login");
+    }
+  }, [navigate]);
+  
   useEffect(() => {
     // Interval 4 detik
     const interval = setInterval(() => {

@@ -32,6 +32,11 @@ export default function Sidebar() {
                             Inventory
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink to="/memberlist" className={menuClass}>
+                            Member List
+                        </NavLink>
+                    </li>
                 </ul>
             </div>
 
