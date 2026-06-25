@@ -8,6 +8,7 @@ import AdminLayout from './layouts/AdminLayout';
 import Loading from './components/Loading';
 
 const Landing = React.lazy(() => import("./pages/Landing"));
+const GuestCatalog = React.lazy(() => import("./pages/GuestCatalog"));
 const Catalog = React.lazy(() => import("./pages/member/Catalog"));
 const Custom = React.lazy(() => import("./pages/member/Custom"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
@@ -24,6 +25,7 @@ function App() {
       <Routes>
         {/* Guest Landing Page without Sidebar Layout */}
         <Route path="/" element={<Landing />} />
+        <Route path="/guestCatalog" element={<GuestCatalog />} />
 
                 {/* Main Member Pages with Sidebar Layout */}
         <Route element={<AdminLayout />}>

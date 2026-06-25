@@ -24,7 +24,7 @@ import { fetchPCCatalog, normalizePC } from "../lib/supabasepc";
   hero section will composite it under the dark gradient + grid overlay.
   Until then, it gracefully falls back to a pure gradient backdrop.
 */
-const HERO_IMAGE_SRC = "/hero-rig.jpg";
+const HERO_IMAGE_SRC = "/img/hero-rig.jpg";
 
 // Persona profiles with clear specifications and elite presentation
 const PERSONAS = [
@@ -251,6 +251,9 @@ export default function Landing() {
             <a href="#process" onClick={(e) => handleScrollTo(e, "process")} className="hover:text-[#A78BFA] transition-colors">
               Crafting process
             </a>
+            <Link to="/guestCatalog" className="hover:text-[#A78BFA] transition-colors">
+              Catalog
+            </Link>
           </nav>
 
           <div className="flex items-center gap-4">
@@ -266,7 +269,6 @@ export default function Landing() {
 
       {/* 2. HERO — image-backed, dark, blueprint-grid overlay */}
       <section className="relative min-h-screen flex items-center justify-center pt-24 pb-20 overflow-hidden">
-        {/* Background image (drop yours at /hero-rig.jpg) */}
         <div className="absolute inset-0">
           <img
             src={HERO_IMAGE_SRC}
@@ -306,18 +308,11 @@ export default function Landing() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 pt-4">
             <Link
-              to="/custom"
+              to="/guestCatalog"
               className="w-full sm:w-auto bg-[#7C5CFC] hover:bg-[#6D4DEF] text-white text-xs font-bold uppercase tracking-[0.2em] px-8 py-5 rounded-lg flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-xl hover:shadow-[#7C5CFC]/25 active:scale-95 group cursor-pointer"
             >
-              Commission Build
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-
-            <Link
-              to="/catalog"
-              className="w-full sm:w-auto bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 text-[#EDECE7] text-xs font-bold uppercase tracking-[0.2em] px-8 py-5 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 active:scale-95"
-            >
               Explore Catalog
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
@@ -392,7 +387,7 @@ export default function Landing() {
                   </p>
                 </div>
                 <button
-                  onClick={() => navigate("/custom")}
+                  onClick={() => navigate("/login")}
                   className="bg-[#7C5CFC] hover:bg-[#6D4DEF] text-white text-[10px] font-bold uppercase tracking-widest px-6 py-4 rounded-lg flex items-center gap-2 transition-all cursor-pointer hover:shadow-lg hover:shadow-[#7C5CFC]/20"
                 >
                   Configure Profile <ArrowRight className="w-3.5 h-3.5" />
@@ -483,7 +478,7 @@ export default function Landing() {
                       <p className="ff-mono text-[10px] text-[#6B6E76] uppercase mt-0.5">{simRec.tier}</p>
                     </div>
                     <button
-                      onClick={() => navigate(`/catalog`)}
+                      onClick={() => navigate(`/login`)}
                       className="text-[9px] font-bold uppercase tracking-widest text-[#EDECE7] bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 px-4 py-2 rounded transition-all cursor-pointer"
                     >
                       View Details
@@ -726,16 +721,12 @@ export default function Landing() {
             Ready to design your custom computer?
           </h2>
           <p className="text-[#9A9DA6] text-sm max-w-2xl mx-auto leading-relaxed font-light">
-            We limit assembly slots to 15 builds per month to maintain craftsmanship. Register your interest below to reserve your custom build slot.
+            We limit assembly slots to 15 builds per month to maintain craftsmanship. Login and tell us your interest or needs below to reserve your custom build slot.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto pt-4">
-            <input
-              type="email"
-              placeholder="Enter your contact email"
-              className="w-full bg-white/[0.03] border border-white/[0.1] rounded-lg px-4 py-4 text-xs focus:outline-none focus:border-[#7C5CFC] text-[#EDECE7] placeholder-[#6B6E76]"
-            />
+          
             <button
-              onClick={() => navigate("/custom")}
+              onClick={() => navigate("/login")}
               className="w-full sm:w-auto bg-[#7C5CFC] hover:bg-[#6D4DEF] text-white text-[10px] font-extrabold uppercase tracking-widest px-8 py-4.5 rounded-lg border border-white/10 transition-all cursor-pointer whitespace-nowrap"
             >
               Consult My Builder
@@ -762,8 +753,8 @@ export default function Landing() {
           <div>
             <h4 className="ff-mono text-[10px] uppercase tracking-widest text-[#5A5D65] font-bold mb-4">Commissioning</h4>
             <ul className="space-y-2 text-xs text-[#8A8D96]">
-              <li><Link to="/custom" className="hover:text-[#A78BFA] transition-colors">Start Custom Commission</Link></li>
-              <li><Link to="/catalog" className="hover:text-[#A78BFA] transition-colors">Pre-Built Inventory</Link></li>
+              <li><Link to="/login" className="hover:text-[#A78BFA] transition-colors">Start Custom Commission</Link></li>
+              <li><Link to="/login" className="hover:text-[#A78BFA] transition-colors">Pre-Built Inventory</Link></li>
               <li><a href="#process" onClick={(e) => handleScrollTo(e, "process")} className="hover:text-[#A78BFA] transition-colors">Engineering Checklist</a></li>
               <li><a href="#simulator" onClick={(e) => handleScrollTo(e, "simulator")} className="hover:text-[#A78BFA] transition-colors">Performance Calculator</a></li>
             </ul>
@@ -844,13 +835,13 @@ export default function Landing() {
 
                 <div className="pt-6 border-t border-white/[0.07] flex gap-4">
                   <button
-                    onClick={() => { setSelectedPC(null); navigate("/custom"); }}
+                    onClick={() => { setSelectedPC(null); navigate("/login"); }}
                     className="flex-1 bg-[#7C5CFC] hover:bg-[#6D4DEF] text-white text-[10px] font-bold uppercase tracking-widest py-4 rounded-lg transition-all text-center cursor-pointer hover:shadow-lg hover:shadow-[#7C5CFC]/20"
                   >
                     Custom Configure
                   </button>
                   <button
-                    onClick={() => { setSelectedPC(null); navigate("/catalog"); }}
+                    onClick={() => { setSelectedPC(null); navigate("/guestCatalog"); }}
                     className="flex-1 bg-white/[0.04] hover:bg-white/[0.08] text-[#EDECE7] text-[10px] font-bold uppercase tracking-widest py-4 rounded-lg transition-all text-center border border-white/10 cursor-pointer"
                   >
                     Explore Similar
