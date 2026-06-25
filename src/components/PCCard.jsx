@@ -15,28 +15,28 @@ export default function PCCard({ pc }) {
   return (
     <div className="group cursor-pointer flex flex-col">
       {/* Image & Hover Container */}
-      <div className="relative aspect-[4/5] bg-white mb-8 overflow-hidden border border-slate-100 transition-all duration-700 group-hover:shadow-2xl group-hover:shadow-indigo-100/50 group-hover:-translate-y-2">
+      <div className="relative aspect-[4/5] bg-white/[0.02] mb-6 overflow-hidden border border-white/[0.07] rounded-xl transition-all duration-700 group-hover:shadow-xl group-hover:shadow-[#7C5CFC]/10 group-hover:-translate-y-1.5">
         <img
           src={pc.image}
           alt={pc.name}
-          className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
           onError={(e) => { e.target.src = "https://via.placeholder.com/400x500?text=No+Image"; }}
         />
 
         {/* Technical Overlay */}
-        <div className="absolute inset-0 bg-slate-900/95 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-between p-10">
+        <div className="absolute inset-0 bg-[#08090C]/95 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-between p-8">
           {/* Top Section: Specs */}
-          <div className="space-y-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-            <div className="border-b border-slate-700 pb-4">
-              <p className="text-[9px] text-indigo-400 font-bold tracking-[0.3em] uppercase mb-2">
+          <div className="space-y-5 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+            <div className="border-b border-white/[0.08] pb-3">
+              <p className="text-[9px] text-[#A78BFA] font-bold tracking-[0.3em] uppercase mb-1.5">
                 Build Identifier
               </p>
-              <h3 className="text-lg font-light text-white uppercase tracking-widest">
+              <h3 className="text-base font-semibold text-[#EDECE7] uppercase tracking-wider">
                 {pc.id}
               </h3>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               {pc.specs?.gpu && <SpecDetail label="GPU" value={pc.specs.gpu} />}
               {pc.specs?.cpu && <SpecDetail label="CPU" value={pc.specs.cpu} />}
               {pc.thermals?.cooler && pc.thermals.cooler !== "—" && (
@@ -50,13 +50,13 @@ export default function PCCard({ pc }) {
           </div>
 
           {/* Bottom Section: Order Button */}
-          <div className="translate-y-8 group-hover:translate-y-0 transition-all duration-700 delay-100">
+          <div className="translate-y-6 group-hover:translate-y-0 transition-all duration-700 delay-75">
             <button
               disabled={isOutOfStock}
-              className={`w-full py-4 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 border
+              className={`w-full py-3.5 text-[10px] font-bold uppercase tracking-[0.2em] rounded-lg transition-all duration-300 border
                 ${isOutOfStock
-                  ? "bg-slate-800/50 border-slate-700 text-slate-500 cursor-not-allowed"
-                  : "bg-white border-white text-slate-900 hover:bg-transparent hover:text-white"
+                  ? "bg-white/[0.02] border-white/[0.06] text-[#5A5D65] cursor-not-allowed"
+                  : "bg-[#7C5CFC] border-[#7C5CFC] text-white hover:bg-transparent hover:text-[#C9C2FF] hover:border-[#7C5CFC]/40"
                 }`}
             >
               {isOutOfStock ? "Out of Stock" : "Order Now"}
@@ -66,32 +66,34 @@ export default function PCCard({ pc }) {
       </div>
 
       {/* Product Info (Always Visible) */}
-      <div className="space-y-3 px-2">
+      <div className="space-y-2.5 px-1.5">
         <div className="flex justify-between items-start gap-4">
-          <h2 className="text-xl font-bold tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors uppercase italic leading-tight">
+          <h2 className="text-base font-bold tracking-wide text-[#F4F3EF] group-hover:text-[#C9C2FF] transition-colors uppercase line-clamp-1 leading-tight">
             {pc.name}
           </h2>
-          <p className="text-sm font-light text-slate-400 tabular-nums shrink-0">
+          <p className="text-xs font-bold text-[#D97757] tabular-nums shrink-0 mt-0.5">
             {displayPrice}
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <span
-            className={`w-1.5 h-1.5 rounded-full shrink-0
-              ${availability === "In Stock" ? "bg-green-500" :
+            className={`w-1.5 h-1.5 rounded-full shrink-0 animate-pulse
+              ${availability === "In Stock" ? "bg-emerald-500" :
                 availability === "Limited" || availability === "Low Stock" ? "bg-amber-500" :
-                "bg-red-500"}`}
+                "bg-rose-500"}`}
           />
-          <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-medium">
+          <p className="text-[9px] text-[#8A8D96] uppercase tracking-[0.2em] font-medium">
             {availability}
           </p>
         </div>
 
         {pc.category && (
-          <span className="inline-flex text-[9px] font-bold uppercase tracking-widest bg-slate-100 text-slate-500 px-2 py-0.5 rounded">
-            {pc.category}
-          </span>
+          <div className="pt-1">
+            <span className="inline-flex text-[8px] font-bold uppercase tracking-widest bg-white/[0.03] text-[#6B6E76] border border-white/[0.06] px-2 py-0.5 rounded">
+              {pc.category}
+            </span>
+          </div>
         )}
       </div>
     </div>
@@ -101,8 +103,8 @@ export default function PCCard({ pc }) {
 function SpecDetail({ label, value }) {
   return (
     <div>
-      <p className="text-[8px] text-slate-500 uppercase tracking-widest mb-1">{label}</p>
-      <p className="text-xs text-slate-200 font-medium tracking-wide leading-relaxed">{value}</p>
+      <p className="text-[8px] text-[#6B6E76] uppercase tracking-widest mb-0.5">{label}</p>
+      <p className="text-xs text-[#EDECE7] font-medium tracking-wide leading-relaxed line-clamp-1">{value}</p>
     </div>
   );
 }

@@ -1,8 +1,8 @@
 // src/pages/Catalog.jsx
 import { useState, useEffect, useMemo } from "react";
-import PCCard from "../components/PCCard";
-import FilterBar from "../components/catalog/FilterBar";
-import { fetchPCCatalog, normalizePC } from "../lib/supabase";
+import PCCard from "../../components/PCCard";
+import FilterBar from "../../components/catalog/FilterBar";
+import { fetchPCCatalog, normalizePC } from "../../lib/supabasepc";
 
 export default function Catalog() {
   const [pcData, setPcData] = useState([]);
@@ -45,9 +45,9 @@ export default function Catalog() {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-8 py-24 text-center">
-        <div className="inline-flex flex-col items-center gap-4 text-slate-400">
-          <div className="w-8 h-8 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
+      <div className="max-w-7xl mx-auto px-8 py-24 text-center bg-[#08090C]">
+        <div className="inline-flex flex-col items-center gap-4 text-[#6B6E76]">
+          <div className="w-8 h-8 border-2 border-[#A78BFA] border-t-transparent rounded-full animate-spin" />
           <p className="text-sm uppercase tracking-widest font-medium">Loading Catalog…</p>
         </div>
       </div>
@@ -56,11 +56,11 @@ export default function Catalog() {
 
   if (error) {
     return (
-      <div className="max-w-7xl mx-auto px-8 py-24 text-center">
-        <p className="text-sm text-red-500 font-medium">Failed to load catalog: {error}</p>
+      <div className="max-w-7xl mx-auto px-8 py-24 text-center bg-[#08090C]">
+        <p className="text-sm text-[#E27B7B] font-medium">Failed to load catalog: {error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="mt-4 text-xs uppercase tracking-widest text-indigo-600 underline"
+          className="mt-4 text-xs uppercase tracking-widest text-[#A78BFA] underline hover:text-[#C9C2FF]"
         >
           Retry
         </button>
@@ -69,7 +69,7 @@ export default function Catalog() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-8 py-12">
+    <div className="max-w-7xl mx-auto px-8 py-12 bg-[#08090C]">
       {/* Search & Filter */}
       <FilterBar
         searchTerm={dataForm.searchTerm}
@@ -79,7 +79,7 @@ export default function Catalog() {
       />
 
       {filteredPCs.length === 0 ? (
-        <div className="py-24 text-center text-slate-400 text-sm">
+        <div className="py-24 text-center text-[#6B6E76] text-sm">
           No products match your current filters.
         </div>
       ) : (

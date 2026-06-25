@@ -23,18 +23,13 @@ export default function Sidebar() {
             <div id="sidebar-menu" className="px-4 mt-4">
                 <ul className="space-y-3">
                     <li>
-                        <NavLink to="/member" className={menuClass}>
+                        <NavLink to="/dashboard" className={menuClass}>
                             Dashboard
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/catalog" className={menuClass}>
-                            Catalog
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/custom" className={menuClass}>
-                            Custom Build
+                        <NavLink to="/inventory" className={menuClass}>
+                            Inventory
                         </NavLink>
                     </li>
                 </ul>

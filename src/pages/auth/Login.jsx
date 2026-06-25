@@ -7,19 +7,22 @@ export default function Login() {
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header: Left-aligned and Uppercase */}
-            <h2 className="text-2xl font-bold text-slate-900 mb-2 text-left uppercase tracking-tight">
+            <h2 className="text-2xl font-bold text-[#F4F3EF] mb-2 text-left uppercase tracking-tight">
                 Welcome Back!
             </h2>
+            <p className="text-xs text-[#6B6E76] mb-8 text-left">
+                Sign in to manage your builds and orders.
+            </p>
 
             <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
                 <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-slate-600 mb-2">
+                    <label htmlFor="email" className="block text-[10px] font-bold text-[#9A9DA6] uppercase tracking-widest mb-2">
                         Email address
                     </label>
                     <input
                         type="email"
                         id="email"
-                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none transition-all text-sm placeholder-slate-400"
+                        className="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.1] rounded-xl focus:ring-2 focus:ring-[#7C5CFC]/20 focus:border-[#7C5CFC] outline-none transition-all text-sm text-[#EDECE7] placeholder-[#5A5D65]"
                         placeholder="name@company.com"
                     />
                 </div>
@@ -27,20 +30,20 @@ export default function Login() {
                 {/* Password Input */}
                 <div>
                     <div className="flex justify-between items-center mb-2">
-                        <label htmlFor="password" className="block text-sm font-semibold text-slate-600">
+                        <label htmlFor="password" className="block text-[10px] font-bold text-[#9A9DA6] uppercase tracking-widest">
                             Password
                         </label>
                         <Link
                             to="/forgot"
-                            className="text-xs text-purple-500 hover:text-purple-700 font-bold transition-colors"
+                            className="text-xs text-[#A78BFA] hover:text-[#C9C2FF] font-bold transition-colors"
                         >
-                            Forgot password?    
+                            Forgot password?
                         </Link>
                     </div>
                     <input
                         type="password"
                         id="password"
-                        className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none transition-all text-sm placeholder-slate-400"
+                        className="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.1] rounded-xl focus:ring-2 focus:ring-[#7C5CFC]/20 focus:border-[#7C5CFC] outline-none transition-all text-sm text-[#EDECE7] placeholder-[#5A5D65]"
                         placeholder="••••••••"
                     />
                 </div>
@@ -50,19 +53,19 @@ export default function Login() {
                     <input
                         id="remember-me"
                         type="checkbox"
-                        className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-slate-300 rounded"
+                        className="h-4 w-4 rounded border-white/20 bg-white/[0.03] text-[#7C5CFC] focus:ring-[#7C5CFC]/40"
                     />
-                    <label htmlFor="remember-me" className="ml-2 block text-sm text-slate-600">
+                    <label htmlFor="remember-me" className="ml-2 block text-sm text-[#9A9DA6]">
                         Remember me
                     </label>
                 </div>
 
-                {/* Submit Button: Gradient & Rounded */}
+                {/* Submit Button */}
                 <button
                     type="submit"
-                    onClick={() => navigate("/")}
-                    className="w-full bg-gradient-to-br from-purple-600 to-indigo-400 hover:opacity-90
-                            text-white text-sm font-bold py-4 rounded-2xl transition-all duration-300 uppercase tracking-widest shadow-lg shadow-purple-200"
+                    onClick={() => navigate("/member")}
+                    className="w-full bg-[#7C5CFC] hover:bg-[#6D4DEF]
+                            text-white text-sm font-bold py-4 rounded-2xl transition-all duration-300 uppercase tracking-widest shadow-lg shadow-[#7C5CFC]/20"
                 >
                     Login
                 </button>
@@ -71,15 +74,15 @@ export default function Login() {
             {/* OR Divider */}
             <div className="relative my-8">
                 <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-slate-200"></div>
+                    <div className="w-full border-t border-white/[0.08]"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-slate-600 font-light">Or</span>
+                    <span className="px-2 bg-[#0E0F13] text-[#6B6E76] font-light">Or</span>
                 </div>
             </div>
 
             {/* Google Sign In */}
-            <button className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-slate-200 rounded-full hover:bg-slate-50 transition-all text-sm font-semibold text-slate-700">
+            <button className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-white/[0.1] bg-white/[0.02] rounded-full hover:bg-white/[0.05] transition-all text-sm font-semibold text-[#EDECE7]">
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path
                         fill="currentColor"
@@ -101,11 +104,16 @@ export default function Login() {
                 Sign in with Google
             </button>
 
-            {/* Footer Link: Purple text */}
-            <p className="mt-8 text-center text-sm text-slate-500">
+            {/* Footer Links */}
+            <p className="mt-8 text-center text-sm text-[#6B6E76]">
                 New account?{" "}
-                <Link to="/register" className="text-purple-600 font-bold hover:underline transition-all">
+                <Link to="/register" className="text-[#A78BFA] font-bold hover:text-[#C9C2FF] hover:underline transition-all">
                     Register Account
+                </Link>
+            </p>
+            <p className="mt-4 text-center text-sm text-[#6B6E76]">
+                <Link to="/dashboard" className="text-[#A78BFA] font-bold hover:text-[#C9C2FF] hover:underline transition-all">
+                    to Admin Dashboard
                 </Link>
             </p>
         </div>

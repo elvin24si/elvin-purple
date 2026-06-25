@@ -1,4 +1,4 @@
-// src/lib/supabase.js
+// src/lib/supabasepc.js
 // Centralized Supabase REST API client for WhiteFrame Labs
 
 const SUPABASE_URL = "https://soprsnuiqltjurhqcwli.supabase.co/rest/v1";

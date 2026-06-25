@@ -6,7 +6,7 @@ import {
   updatePC,
   deletePC,
   normalizePC,
-} from "../lib/supabase";
+} from "../../lib/supabasepc";
 import { Plus, Search, Pencil, Trash2, X, Loader2, AlertTriangle, RefreshCw } from "lucide-react";
 
 // ─── EMPTY FORM TEMPLATE (mirrors Supabase column names) ─────────────────────
