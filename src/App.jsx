@@ -5,9 +5,8 @@ import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
 
 import Loading from './components/Loading';
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
 
+const Landing = React.lazy(() => import("./pages/Landing"));
 const Catalog = React.lazy(() => import("./pages/Catalog"));
 const Custom = React.lazy(() => import("./pages/Custom"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
@@ -21,23 +20,27 @@ function App() {
 
   return (
     <Suspense fallback={<Loading />}>
-    <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/member" element={<MemberDashboard />} />
-        <Route path="/custom" element={<Custom />} />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="/inventory" element={<Inventory />} />
-      </Route>
+      <Routes>
+        {/* Guest Landing Page without Sidebar Layout */}
+        <Route path="/" element={<Landing />} />
 
-      <Route element={<AuthLayout/>}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register/>} />
-            <Route path="/forgot" element={<Forgot/>} />
+        {/* Main Administrative / Member Pages with Sidebar Layout */}
+        <Route element={<MainLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/member" element={<MemberDashboard />} />
+          <Route path="/custom" element={<Custom />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/inventory" element={<Inventory />} />
         </Route>
 
-    </Routes>
+        {/* Auth Layout */}
+        <Route element={<AuthLayout/>}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register/>} />
+          <Route path="/forgot" element={<Forgot/>} />
+        </Route>
+      </Routes>
     </Suspense>
   )
 }
-export default App
+export default App;

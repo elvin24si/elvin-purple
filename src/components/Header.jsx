@@ -11,7 +11,7 @@ export default function Header() {
           <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-[0.3em]">Premium Boutique PC Shop</p>
         </div>
         <nav className="flex gap-8 text-[10px] font-medium uppercase tracking-widest text-slate-500">
-          <Link to="/" className="hover:text-indigo-600 transition-colors">Catalog</Link>
+          <Link to="/catalog" className="hover:text-indigo-600 transition-colors">Catalog</Link>
           <Link to="/custom" className="hover:text-indigo-600 transition-colors">Custom Build</Link>
         </nav>
       </div>

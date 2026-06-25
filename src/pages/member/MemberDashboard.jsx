@@ -12,11 +12,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import StatCard from "@/components/dashboard/StatCard";
 
 export default function MemberDashboard() {
-  const clientName = "Acme Corp";
+  const clientName = "Jason Vorhees";
   
-  // --- STRATEGI STATE & USEEFFECT ---
-  
-  // State untuk menyimpan progress simulasi live
   const [fluidProgress, setFluidProgress] = useState(45);
   const [logs, setLogs] = useState([
     { id: 1, time: "Today at 2:15 PM", text: "Custom GPU liquid cooling loop routing initiated." },
@@ -24,9 +21,8 @@ export default function MemberDashboard() {
     { id: 3, time: "June 15, 2026", text: "Premium chassis allocation completed & custom paint prepped." }
   ]);
 
-  // PENERAPAN USEEFFECT 1: Untuk simulasi update data live (Interval)
   useEffect(() => {
-    // Membuat interval untuk menaikkan progress bar setiap 4 detik
+    // Interval 4 detik
     const interval = setInterval(() => {
       setFluidProgress((prevProgress) => {
         if (prevProgress >= 100) {
@@ -37,7 +33,7 @@ export default function MemberDashboard() {
         // Tambah progress secara acak antara 5 sampai 15 persen
         const newProgress = prevProgress + Math.floor(Math.random() * 10) + 5;
         
-        // FITUR BARU: Tambah log otomatis ke Engineering Log jika progress naik
+        // Tambah log otomatis ke Engineering Log jika progress naik
         if (newProgress > prevProgress) {
           setLogs((prevLogs) => [
             {
@@ -51,15 +47,13 @@ export default function MemberDashboard() {
         
         return Math.min(newProgress, 100);
       });
-    }, 4000); // Berjalan setiap 4000ms (4 detik)
+    }, 4000); // Berjalan setiap 4 detik
 
-    // CLEANUP FUNCTION: Menghapus interval jika user pindah halaman agar tidak bocor (memory leak)
     return () => clearInterval(interval);
-  }, []); // Array kosong berarti hanya berjalan 1x saat komponen dipasang
+  }, []);
 
   // ------------------------------------
 
-  // FILTER LOGIC (Tetap dihitung langsung)
   const customOrders = pcData.filter(pc => pc.clientName === clientName);
   const userBuilds = customOrders.length > 0 
     ? customOrders 
