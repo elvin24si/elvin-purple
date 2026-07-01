@@ -37,6 +37,11 @@ export default function Sidebar() {
                             Member List
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink to="/points-inventory" className={menuClass}>
+                            Points Shop CRUD
+                        </NavLink>
+                    </li>
                 </ul>
             </div>
 

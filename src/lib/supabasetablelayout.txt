@@ -1,0 +1,107 @@
+
+-- ========================================================
+-- 1. MEMBERS TABLE (Unified Customer + Sign-In Account Profile)
+-- ========================================================
+CREATE TABLE members (
+    -- Maps 1:1 with Supabase Auth account creation
+    member_id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+    username VARCHAR(150) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    role VARCHAR(100) DEFAULT 'Individual',
+    
+    -- Images (with a default blank avatar placeholder)
+    avatar_url TEXT DEFAULT 'https://placeholder.com/default-avatar.png',
+    
+    -- Loyalty Points System
+    current_points INT DEFAULT 0,
+    lifetime_points_earned INT DEFAULT 0,
+    
+    -- Order Stats
+    times_ordered INT DEFAULT 0,
+    total_spent_idr BIGINT DEFAULT 0,
+    join_date DATE DEFAULT CURRENT_DATE,
+    last_order_date DATE NULL -- Can be empty/NULL initially
+);
+
+-- ========================================================
+-- 2. PC CATALOG TABLE
+-- ========================================================
+CREATE TABLE pc_catalog (
+    product_id VARCHAR(50) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    category VARCHAR(100),
+    
+    -- Product Images (with a default blank asset placeholder)
+    product_img_url TEXT DEFAULT 'https://placeholder.com/default-pc.png',
+    
+    -- Financials
+    retail_price_idr BIGINT DEFAULT 0,
+    component_cogs_idr BIGINT DEFAULT 0,
+    labor_cost_idr BIGINT DEFAULT 0,
+    total_unit_cost BIGINT DEFAULT 0,
+    net_profit_idr BIGINT DEFAULT 0,
+    gross_margin NUMERIC(5,3),
+    
+    -- Specifications
+    cpu_brand VARCHAR(50),
+    cpu_model VARCHAR(100),
+    gpu_brand VARCHAR(50),
+    gpu_model VARCHAR(100),
+    ram_specs VARCHAR(100),
+    cooler_type VARCHAR(50),
+    availability VARCHAR(50),
+    target_performance TEXT
+);
+
+-- ========================================================
+-- 3. ORDERS TABLE (Connects Members to PCs)
+-- ========================================================
+CREATE TABLE orders (
+    order_id VARCHAR(50) PRIMARY KEY,
+    member_id UUID REFERENCES members(member_id) ON DELETE SET NULL, -- References the unified table
+    product_id VARCHAR(50) REFERENCES pc_catalog(product_id) ON DELETE SET NULL,
+    
+    qty INT DEFAULT 1,
+    product_price_idr BIGINT DEFAULT 0,
+    shipping_cost_idr BIGINT DEFAULT 0,
+    total_bill_idr BIGINT DEFAULT 0,
+    
+    payment_method VARCHAR(50),
+    payment_detail VARCHAR(100),
+    courier_service VARCHAR(100),
+    destination_region VARCHAR(100),
+    order_status VARCHAR(50),
+    order_date DATE DEFAULT CURRENT_DATE,
+    shipped_date DATE,
+    arrival_date DATE
+);
+
+-- ========================================================
+-- 4. POINTS SHOP ITEMS
+-- ========================================================
+CREATE TABLE points_shop_items (
+    item_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    item_name VARCHAR(255) NOT NULL,
+    item_type VARCHAR(50) NOT NULL, -- 'Accessory Discount', 'Merch', etc.
+    description TEXT,
+    points_cost INT NOT NULL,
+    stock_quantity INT DEFAULT 0,
+    is_active BOOLEAN DEFAULT TRUE,
+    
+    -- Point Item Image (with default blank asset placeholder)
+    item_img_url TEXT DEFAULT 'https://placeholder.com/default-item.png',
+    
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ========================================================
+-- 5. POINTS REDEMPTIONS (Logs transactions inside the Point Shop)
+-- ========================================================
+CREATE TABLE points_redemptions (
+    redemption_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    member_id UUID REFERENCES members(member_id) ON DELETE CASCADE,
+    item_id UUID REFERENCES points_shop_items(item_id) ON DELETE RESTRICT,
+    points_spent INT NOT NULL,
+    redemption_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(50) DEFAULT 'Pending' -- 'Pending', 'Shipped', 'Claimed'
+);

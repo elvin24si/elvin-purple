@@ -11,19 +11,19 @@ const headers = {
   "Prefer": "return=representation",
 };
 
-// --- READ: Fetch all rows from member ---
+// --- READ: Fetch all rows from members ---
 export async function fetchMember() {
-  const res = await fetch(`${SUPABASE_URL}/member?order=member_id.asc`, {
+  const res = await fetch(`${SUPABASE_URL}/members?order=member_id.asc`, {
     method: "GET",
     headers,
   });
-  if (!res.ok) throw new Error(`Failed to fetch member: ${res.statusText}`);
+  if (!res.ok) throw new Error(`Failed to fetch members: ${res.statusText}`);
   return res.json();
 }
 
 // --- CREATE: Insert a new member row ---
 export async function insertMember(data) {
-  const res = await fetch(`${SUPABASE_URL}/member`, {
+  const res = await fetch(`${SUPABASE_URL}/members`, {
     method: "POST",
     headers,
     body: JSON.stringify(data),
@@ -38,7 +38,7 @@ export async function insertMember(data) {
 // --- UPDATE: Patch an existing row by member_id ---
 export async function updateMember(memberId, data) {
   const res = await fetch(
-    `${SUPABASE_URL}/member?member_id=eq.${encodeURIComponent(memberId)}`,
+    `${SUPABASE_URL}/members?member_id=eq.${encodeURIComponent(memberId)}`,
     {
       method: "PATCH",
       headers,
@@ -55,7 +55,7 @@ export async function updateMember(memberId, data) {
 // --- DELETE: Remove a row by member_id ---
 export async function deleteMember(memberId) {
   const res = await fetch(
-    `${SUPABASE_URL}/member?member_id=eq.${encodeURIComponent(memberId)}`,
+    `${SUPABASE_URL}/members?member_id=eq.${encodeURIComponent(memberId)}`,
     {
       method: "DELETE",
       headers: { ...headers, Prefer: "return=minimal" },
@@ -95,18 +95,18 @@ export function normalizeMember(row) {
 
 // --- AUTH: Validate login credentials and fetch matching user profile ---
 export async function verifyLogin(email, password) {
-  // Query member where email matches exactly
-  const url = `${SUPABASE_URL}/member?email=eq.${encodeURIComponent(email.trim())}`;
-  
+  // Query members where email matches exactly
+  const url = `${SUPABASE_URL}/members?email=eq.${encodeURIComponent(email.trim())}`;
+
   const res = await fetch(url, {
     method: "GET",
     headers,
   });
 
   if (!res.ok) throw new Error("Authentication request failed.");
-  
+
   const users = await res.json();
-  
+
   if (!users || users.length === 0) {
     throw new Error("No account found with this email address.");
   }
@@ -123,7 +123,7 @@ export async function verifyLogin(email, password) {
 
 // --- AUTH: Check if a given email is already taken inside the sandboxed database ---
 export async function checkEmailExists(email) {
-  const url = `${SUPABASE_URL}/member?email=eq.${encodeURIComponent(email.trim())}`;
+  const url = `${SUPABASE_URL}/members?email=eq.${encodeURIComponent(email.trim())}`;
   const res = await fetch(url, { method: "GET", headers });
   if (!res.ok) return false;
   const data = await res.json();

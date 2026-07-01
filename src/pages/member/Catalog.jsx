@@ -14,7 +14,12 @@ export default function Catalog() {
   useEffect(() => {
     setLoading(true);
     fetchPCCatalog()
-      .then((rows) => setPcData(rows.map(normalizePC)))
+      .then((rows) => {
+        const normalized = rows.map(normalizePC);
+        // Exclude Point Shop items from the standard catalog
+        const standardPCs = normalized.filter((pc) => !pc.allowPointsPayment);
+        setPcData(standardPCs);
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);

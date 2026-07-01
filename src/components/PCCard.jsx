@@ -1,16 +1,47 @@
 // src/components/PCCard.jsx
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { insertOrder } from "../lib/supabasepc";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import { Button } from "./ui/button";
+import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+
+import { useCart } from "../context/CartContext";
 
 export default function PCCard({ pc }) {
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+  const [added, setAdded] = useState(false);
+
   const availability = pc.meta?.availability ?? "Unknown";
   const isOutOfStock = availability === "Out of Stock";
 
   const displayPrice = pc.price
     ? new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        maximumFractionDigits: 0,
-      }).format(pc.price)
+      style: "currency",
+      currency: "IDR",
+      maximumFractionDigits: 0,
+    }).format(pc.price)
     : "—";
+
+  const handleOrderClick = (e) => {
+    e.stopPropagation();
+    const savedUser = localStorage.getItem("current_user");
+    if (!savedUser) {
+      navigate("/login");
+      return;
+    }
+    addToCart(pc);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   return (
     <div className="group cursor-pointer flex flex-col">
@@ -53,13 +84,16 @@ export default function PCCard({ pc }) {
           <div className="translate-y-6 group-hover:translate-y-0 transition-all duration-700 delay-75">
             <button
               disabled={isOutOfStock}
+              onClick={handleOrderClick}
               className={`w-full py-3.5 text-[10px] font-bold uppercase tracking-[0.2em] rounded-lg transition-all duration-300 border
                 ${isOutOfStock
                   ? "bg-white/[0.02] border-white/[0.06] text-[#5A5D65] cursor-not-allowed"
-                  : "bg-[#7C5CFC] border-[#7C5CFC] text-white hover:bg-transparent hover:text-[#C9C2FF] hover:border-[#7C5CFC]/40"
+                  : added
+                    ? "bg-emerald-600 border-emerald-600 text-white"
+                    : "bg-[#7C5CFC] border-[#7C5CFC] text-white hover:bg-transparent hover:text-[#C9C2FF] hover:border-[#7C5CFC]/40"
                 }`}
             >
-              {isOutOfStock ? "Out of Stock" : "Order Now"}
+              {isOutOfStock ? "Out of Stock" : added ? "Added to Cart ✓" : "Add to Cart"}
             </button>
           </div>
         </div>
@@ -81,7 +115,7 @@ export default function PCCard({ pc }) {
             className={`w-1.5 h-1.5 rounded-full shrink-0 animate-pulse
               ${availability === "In Stock" ? "bg-emerald-500" :
                 availability === "Limited" || availability === "Low Stock" ? "bg-amber-500" :
-                "bg-rose-500"}`}
+                  "bg-rose-500"}`}
           />
           <p className="text-[9px] text-[#8A8D96] uppercase tracking-[0.2em] font-medium">
             {availability}

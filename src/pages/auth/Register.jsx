@@ -11,7 +11,7 @@ export default function Register() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    
+
     // Status Trackers
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -19,7 +19,7 @@ export default function Register() {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        
+
         if (!name.trim() || !email.trim() || !password) {
             setError("All input registration fields are required.");
             return;
@@ -50,7 +50,7 @@ export default function Register() {
 
             await insertMember(payload);
             setSuccess(true);
-            
+
             setTimeout(() => {
                 navigate("/member");
             }, 1500);

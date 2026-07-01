@@ -123,7 +123,71 @@ export function normalizePC(row) {
     // Extra
     targetPerformance: row.target_performance ?? "",
 
+    // Point Shop & Payment Rules
+    allowCashPayment: row.allow_cash_payment ?? true,
+    allowPointsPayment: row.allow_points_payment ?? false,
+    pointsPrice: row.points_price ?? null,
+
     // Keep original raw row for edit forms
     _raw: row,
   };
 }
+
+// --- READ: Fetch all rows from orders ---
+export async function fetchOrders() {
+  const res = await fetch(`${SUPABASE_URL}/orders?order=order_date.desc`, {
+    method: "GET",
+    headers,
+  });
+  if (!res.ok) throw new Error(`Failed to fetch orders: ${res.statusText}`);
+  return res.json();
+}
+
+// --- CREATE: Insert a new order row ---
+export async function insertOrder(data) {
+  const res = await fetch(`${SUPABASE_URL}/orders`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `Order insertion failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+// --- UPDATE: Patch an existing order status ---
+export async function updateOrderStatus(orderId, status) {
+  const res = await fetch(
+    `${SUPABASE_URL}/orders?order_id=eq.${encodeURIComponent(orderId)}`,
+    {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify({ status }),
+    }
+  );
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `Update status failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+// --- UPDATE: Patch a single order item status by surrogate ID ---
+export async function updateOrderItemStatus(id, status) {
+  const res = await fetch(
+    `${SUPABASE_URL}/orders?id=eq.${encodeURIComponent(id)}`,
+    {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify({ status }),
+    }
+  );
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `Update item status failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
