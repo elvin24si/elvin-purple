@@ -27,7 +27,6 @@ export default function Login() {
         try {
             const memberRow = await verifyLogin(email, password);
 
-            // 1. Save the whole member object as a string in localStorage
             localStorage.setItem("current_user", JSON.stringify(memberRow));
 
             const userRole = (memberRow.role || "").toLowerCase();
@@ -151,11 +150,6 @@ export default function Login() {
                 New account?{" "}
                 <Link to="/register" className="text-[#A78BFA] font-bold hover:text-[#C9C2FF] hover:underline transition-all">
                     Register Account
-                </Link>
-            </p>
-            <p className="mt-4 text-center text-sm text-[#6B6E76]">
-                <Link to="/dashboard" className="text-[#A78BFA] font-bold hover:text-[#C9C2FF] hover:underline transition-all">
-                    to Admin Dashboard
                 </Link>
             </p>
         </div>

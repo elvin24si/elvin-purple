@@ -20,7 +20,6 @@ export default function Register() {
     const handleRegister = async (e) => {
         e.preventDefault();
         
-        // Base Validation Rule Check
         if (!name.trim() || !email.trim() || !password) {
             setError("All input registration fields are required.");
             return;
@@ -30,13 +29,11 @@ export default function Register() {
         setError(null);
 
         try {
-            // 1. Enforce unique emails in sandboxed mode
             const emailTaken = await checkEmailExists(email);
             if (emailTaken) {
                 throw new Error("This email is already linked to another account.");
             }
 
-            // 2. Build the exact matching payload your table layout uses
             const payload = {
                 member_id: crypto.randomUUID(),
                 username: name.trim(),
@@ -51,11 +48,9 @@ export default function Register() {
                 join_date: new Date().toISOString().split('T')[0] // Formats cleanly as YYYY-MM-DD
             };
 
-            // 3. Post data using your custom Supabase client wrapper
             await insertMember(payload);
             setSuccess(true);
             
-            // Redirect down into the standard customer route after a short UI pause
             setTimeout(() => {
                 navigate("/member");
             }, 1500);
