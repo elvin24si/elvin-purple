@@ -9,6 +9,7 @@ import Loading from './components/Loading';
 import { CartProvider } from './context/CartContext';
 
 const Landing = React.lazy(() => import("./pages/Landing"));
+const LandingOld = React.lazy(() => import("./pages/LandingOld"));
 const GuestCatalog = React.lazy(() => import("./pages/GuestCatalog"));
 const Catalog = React.lazy(() => import("./pages/member/Catalog"));
 const Custom = React.lazy(() => import("./pages/member/Custom"));
@@ -32,6 +33,7 @@ function App() {
         <Routes>
           {/* Guest Landing Page without Sidebar Layout */}
           <Route path="/" element={<Landing />} />
+          <Route path="/old-landing" element={<LandingOld />} />
           <Route path="/guestCatalog" element={<GuestCatalog />} />
 
           {/* Main Admin Pages with Sidebar Layout */}
