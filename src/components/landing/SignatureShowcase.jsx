@@ -9,7 +9,7 @@ const SIGNATURE_RIGS = [
     gpu: "RTX 4080 Super",
     cpu: "Ryzen 7 7800X3D",
     cooling: "Hardline Loops",
-    image: "https://via.placeholder.com/400x500?text=Miyako+Edition+Rig"
+    image: "https://i.imgur.com/sFanPRj.jpeg"
   },
   {
     id: "ayaka",
@@ -18,7 +18,7 @@ const SIGNATURE_RIGS = [
     gpu: "RTX 4090 Founders",
     cpu: "Ryzen 9 7950X3D",
     cooling: "Clear Dual Radiator",
-    image: "https://via.placeholder.com/400x500?text=Ayaka+Edition+Rig"
+    image: "https://sc04.alicdn.com/kf/H2cadc07ed1314493a7b5d6008049ec41e.jpg"
   }
 ];
 
@@ -31,7 +31,7 @@ const MERCH_PACK = {
     "Laser-Etched Metal Crest Keychain",
     "Textured Case Back-Plate Vinyl Wrap"
   ],
-  imageUrlPlaceholder: "https://via.placeholder.com/600x400?text=Premium+Merchandise+Collectibles+Pack"
+  imageUrlPlaceholder: "https://i.imgur.com/azCFDtG.jpeg"
 };
 
 export default function SignatureShowcase() {
@@ -60,7 +60,7 @@ export default function SignatureShowcase() {
 
         {/* 2-Column Responsive Layout: PCs on left, Merchandise on right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
-          
+
           {/* Left Column: Signature Systems Grid */}
           <div className="lg:col-span-7 flex flex-col justify-between gap-8">
             <h4 className="text-xs font-mono uppercase tracking-widest text-[#6B6E76] border-b border-white/[0.06] pb-2">
@@ -68,15 +68,15 @@ export default function SignatureShowcase() {
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 flex-1">
               {SIGNATURE_RIGS.map((rig) => (
-                <div 
+                <div
                   key={rig.id}
                   className="bg-white/[0.01] border border-white/[0.06] rounded-2xl overflow-hidden hover:border-[#7C5CFC]/30 transition-all duration-300 flex flex-col justify-between"
                 >
                   <div className="aspect-[4/5] bg-white/[0.02] border-b border-white/[0.06] relative">
-                    <img 
-                      src={rig.image} 
-                      alt={rig.name} 
-                      className="w-full h-full object-cover" 
+                    <img
+                      src={rig.image}
+                      alt={rig.name}
+                      className="w-full h-full object-cover"
                     />
                     <span className="absolute top-4 left-4 bg-black/80 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1 font-mono text-[8px] uppercase tracking-widest text-[#C9C2FF]">
                       {rig.gpu}
@@ -98,7 +98,7 @@ export default function SignatureShowcase() {
           {/* Right Column: Merchandise Showcase */}
           <div className="lg:col-span-5 bg-[#0E0F14] border border-white/[0.06] rounded-3xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#7C5CFC]/5 rounded-full blur-[40px] pointer-events-none"></div>
-            
+
             <div className="space-y-6">
               <h4 className="text-xs font-mono uppercase tracking-widest text-[#6B6E76] border-b border-white/[0.06] pb-2 flex justify-between items-center">
                 <span>Exclusive Add-Ons</span>
@@ -109,10 +109,10 @@ export default function SignatureShowcase() {
 
               {/* Universal Merchandise Image Box */}
               <div className="rounded-xl border border-white/[0.08] bg-black/40 overflow-hidden aspect-[1.5/1]">
-                <img 
-                  src={MERCH_PACK.imageUrlPlaceholder} 
+                <img
+                  src={MERCH_PACK.imageUrlPlaceholder}
                   alt={MERCH_PACK.title}
-                  className="w-full h-full object-cover opacity-80" 
+                  className="w-full h-full object-cover opacity-80"
                 />
               </div>
 
