@@ -129,3 +129,17 @@ export async function checkEmailExists(email) {
   const data = await res.json();
   return data && data.length > 0;
 }
+
+// --- CUSTOM CONSULTATION: Post a new custom consultation request ---
+export async function insertConsultation(data) {
+  const res = await fetch(`${SUPABASE_URL}/custom_consultations`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `Consultation request failed: ${res.statusText}`);
+  }
+  return res.json();
+}

@@ -1,31 +1,12 @@
 // src/pages/Landing.jsx
 import NewNavbar from "../components/NewNavbar";
 import Hero from "../components/Hero";
-import { Cpu, Terminal, Flame, Shield, CheckCircle2, ChevronRight } from "lucide-react";
+import BudgetSlider from "../components/landing/BudgetSlider";
+import SignatureShowcase from "../components/landing/SignatureShowcase";
+import CatalogPreview from "../components/landing/CatalogPreview";
+import PointsEconomy from "../components/landing/PointsEconomy";
+import { ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const HIGHLIGHTS = [
-  {
-    icon: Terminal,
-    title: "1. Design Consultation",
-    desc: "Collaborate with our system architects to outline performance goals, layout parameters, and aesthetic guidelines."
-  },
-  {
-    icon: Cpu,
-    title: "2. Handcrafted Assembly",
-    desc: "Rigid cleanroom custom loop routing, clean cabling channels, and premium thermal paste applications by master technicians."
-  },
-  {
-    icon: Flame,
-    title: "3. 72h Stress Testing",
-    desc: "Rigorous diagnostic checks, clock speed stability tuning, and thermal profile verifications to ensure out-of-the-box reliability."
-  },
-  {
-    icon: Shield,
-    title: "4. Premium Protection",
-    desc: "Every system is backed by a 5-year full components warranty and lifetime customer support."
-  }
-];
 
 export default function Landing() {
   return (
@@ -42,45 +23,17 @@ export default function Landing() {
       {/* Hero Section */}
       <Hero />
 
-      {/* Features / Crafting Process Section */}
-      <section id="features" className="py-24 border-t border-white/[0.08] bg-[#0E0F14] relative">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-[30%] right-[10%] w-[30vw] h-[30vw] rounded-full blur-[120px] opacity-10 pointer-events-none bg-[#7C5CFC]/10"></div>
-        </div>
+      {/* 1. Dynamic Budget & Performance Estimator */}
+      <BudgetSlider />
 
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-20 space-y-4">
-            <p className="font-mono text-[10px] text-[#A78BFA] tracking-[0.3em] uppercase">Engineering Workflow</p>
-            <h3 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-[#F4F3EF]">
-              How We Build Your Dream Machine
-            </h3>
-            <p className="text-[#9A9DA6] text-sm md:text-base font-light leading-relaxed">
-              We reject standard mass manufacturing. Every WhiteFrame Labs system undergoes an elite, individualized assembly process.
-            </p>
-          </div>
+      {/* 2. Signature Series Showcase */}
+      <SignatureShowcase />
 
-          {/* Highlights Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {HIGHLIGHTS.map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <div 
-                  key={idx}
-                  className="p-6 rounded-2xl bg-white/[0.01] border border-white/[0.06] hover:border-[#7C5CFC]/30 transition-all duration-300 flex flex-col justify-between group"
-                >
-                  <div className="space-y-4">
-                    <div className="w-10 h-10 rounded-xl bg-[#7C5CFC]/10 flex items-center justify-center border border-[#7C5CFC]/20 text-[#A78BFA] group-hover:bg-[#7C5CFC] group-hover:text-white transition-colors duration-300">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <h4 className="ff-display text-base font-bold text-[#F4F3EF]">{item.title}</h4>
-                    <p className="text-xs text-[#8A8D96] leading-relaxed font-light">{item.desc}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      {/* 3. Curated Catalog Preview Grid */}
+      <CatalogPreview />
+
+      {/* 4. Points & Merch Economy ("Gamer Rewards") */}
+      <PointsEconomy />
 
       {/* Pricing / Callout CTA Section */}
       <section id="pricing" className="py-24 border-t border-white/[0.08] bg-[#08090C] relative">
@@ -125,8 +78,10 @@ export default function Landing() {
           </div>
           
           <div className="flex gap-6 text-[10px] font-semibold uppercase tracking-widest text-[#6B6E76]">
-            <a href="#features" className="hover:text-[#EDECE7] transition-colors">Process</a>
-            <a href="#pricing" className="hover:text-[#EDECE7] transition-colors">Pricing</a>
+            <a href="#simulator" className="hover:text-[#EDECE7] transition-colors">Estimator</a>
+            <a href="#signature" className="hover:text-[#EDECE7] transition-colors">Signature</a>
+            <a href="#catalog-preview" className="hover:text-[#EDECE7] transition-colors">Curated</a>
+            <a href="#points-economy" className="hover:text-[#EDECE7] transition-colors">Rewards</a>
             <Link to="/guestCatalog" className="hover:text-[#EDECE7] transition-colors">Catalog</Link>
             <Link to="/old-landing" className="hover:text-[#EDECE7] transition-colors">Legacy Version</Link>
           </div>

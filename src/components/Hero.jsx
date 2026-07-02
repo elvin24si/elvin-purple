@@ -30,7 +30,7 @@ export default function Hero() {
 
   const handleSecondaryClick = (e) => {
     e.preventDefault();
-    const catalogElement = document.getElementById("features");
+    const catalogElement = document.getElementById("simulator");
     if (catalogElement) {
       catalogElement.scrollIntoView({ behavior: "smooth" });
     } else {
@@ -83,11 +83,10 @@ export default function Hero() {
               </Button>
               
               <Button
-                variant="outline"
                 onClick={handleSecondaryClick}
-                className="w-full sm:w-auto border-white/10 hover:bg-white/[0.05] text-[#EDECE7] text-xs font-bold uppercase tracking-[0.15em] px-8 py-5 rounded-lg flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto bg-white hover:bg-[#EDECE7] text-[#08090C] text-xs font-extrabold uppercase tracking-[0.15em] px-8 py-5 rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 shadow-lg shadow-white/5"
               >
-                Explore Features
+                Explore Estimator
               </Button>
             </div>
 
