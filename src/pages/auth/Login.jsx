@@ -1,5 +1,5 @@
 // src/pages/auth/Login.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2, AlertTriangle } from "lucide-react";
 import { verifyLogin } from "../../lib/supabasemem";
@@ -12,6 +12,18 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    // Listen for mock credentials click
+    useEffect(() => {
+        const handleAutofill = (e) => {
+            if (e.detail) {
+                setEmail(e.detail.email || "");
+                setPassword(e.detail.password || "");
+            }
+        };
+        window.addEventListener("autofill-login", handleAutofill);
+        return () => window.removeEventListener("autofill-login", handleAutofill);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
