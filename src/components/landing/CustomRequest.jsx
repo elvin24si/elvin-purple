@@ -1,7 +1,7 @@
 // src/components/landing/CustomRequest.jsx
-import { useState } from "react";
-import { insertConsultation } from "../../lib/supabasemem";
-import { Loader2, Mail, Heart, HelpCircle, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import { insertCommission } from "../../lib/supabasemem";
+import { Loader2, Mail, Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -12,17 +12,35 @@ import {
 } from "../ui/dialog";
 
 export default function CustomRequest() {
+  const [user, setUser] = useState(null);
+  const [requestType, setRequestType] = useState("Individual");
   const [usage, setUsage] = useState("Gaming");
-  const [theme, setTheme] = useState("");
+  const [description, setDescription] = useState("");
   const [contact, setContact] = useState("");
   
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [error, setError] = useState(null);
 
+  // Check if member is logged in to pre-fill email
+  useEffect(() => {
+    const savedUser = localStorage.getItem("current_user");
+    if (savedUser) {
+      try {
+        const parsed = JSON.parse(savedUser);
+        setUser(parsed);
+        if (parsed.email) {
+          setContact(parsed.email);
+        }
+      } catch (e) {
+        console.error("Failed to parse user in CustomRequest", e);
+      }
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!theme.trim() || !contact.trim()) {
+    if (!description.trim() || !contact.trim()) {
       setError("Please fill out all request fields.");
       return;
     }
@@ -31,30 +49,33 @@ export default function CustomRequest() {
     setError(null);
 
     const submissionData = {
-      usage,
-      aesthetic_theme: theme.trim(),
-      contact_info: contact.trim(),
+      email: contact.trim(),
+      member_id: user ? user.member_id : null,
+      request_type: requestType,
+      usage_focus: usage,
+      description: description.trim(),
       created_at: new Date().toISOString()
     };
 
     try {
-      // Attempt posting to Supabase custom_consultations table
-      await insertConsultation(submissionData);
+      // Post to Supabase custom_commissions table
+      await insertCommission(submissionData);
       setShowSuccess(true);
-      setTheme("");
-      setContact("");
+      setDescription("");
+      // Only reset contact if not logged in
+      if (!user) setContact("");
     } catch (err) {
       console.warn("Supabase insert failed. Falling back to local storage cache.", err);
       
       // Fallback caching
       try {
-        const localRequests = JSON.parse(localStorage.getItem("custom_consultations") || "[]");
+        const localRequests = JSON.parse(localStorage.getItem("custom_commissions") || "[]");
         localRequests.push(submissionData);
-        localStorage.setItem("custom_consultations", JSON.stringify(localRequests));
+        localStorage.setItem("custom_commissions", JSON.stringify(localRequests));
         
         setShowSuccess(true);
-        setTheme("");
-        setContact("");
+        setDescription("");
+        if (!user) setContact("");
       } catch (fallbackErr) {
         setError("Submission failed. Please check your connection.");
       }
@@ -86,20 +107,43 @@ export default function CustomRequest() {
             </h3>
             
             <p className="text-[#9A9DA6] text-xs leading-relaxed font-light">
-              Looking for a custom aesthetic theme like Cafe Minimalist, Retro Arcade, or Walnut Mid-Century?
+              Looking for a custom build tailored exactly to your aesthetic theme and technical goals?
             </p>
             <p className="text-[#6B6E76] text-[11px] leading-relaxed font-light">
-              Submit your desired system goals, and our design leads will draft a personalized proposal.
+              Submit your desired system specifications, and our custom engineering lead will draft a direct proposal for you.
             </p>
           </div>
 
-          {/* Right: Consultation Form */}
+          {/* Right: Commission Form */}
           <form onSubmit={handleSubmit} className="md:col-span-7 space-y-5 border-t md:border-t-0 md:border-l border-white/[0.06] pt-6 md:pt-0 md:pl-8">
             {error && (
               <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-lg text-xs">
                 {error}
               </div>
             )}
+
+            {/* Need Category */}
+            <div>
+              <label className="block text-[9px] font-bold text-[#9A9DA6] uppercase tracking-widest mb-2">
+                Need Category
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {["Individual", "Organization"].map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setRequestType(t)}
+                    className={`py-2 px-3 border text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
+                      requestType === t
+                        ? "bg-[#7C5CFC] border-[#7C5CFC] text-white"
+                        : "bg-white/[0.02] border-white/[0.08] text-[#8A8D96] hover:text-white"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* Primary Usage */}
             <div>
@@ -124,35 +168,36 @@ export default function CustomRequest() {
               </div>
             </div>
 
-            {/* Aesthetic Theme */}
+            {/* Description */}
             <div>
-              <label htmlFor="theme" className="block text-[9px] font-bold text-[#9A9DA6] uppercase tracking-widest mb-2">
-                Aesthetic Theme Description
+              <label htmlFor="description" className="block text-[9px] font-bold text-[#9A9DA6] uppercase tracking-widest mb-2">
+                Custom Request Description
               </label>
-              <input
-                id="theme"
-                type="text"
+              <textarea
+                id="description"
                 required
-                value={theme}
-                onChange={(e) => setTheme(e.target.value)}
-                placeholder="e.g. Cafe Minimalist, Walnut Mid-Century, Retro Arcade"
-                className="w-full px-4 py-3 bg-white/[0.02] border border-white/[0.08] rounded-xl focus:ring-2 focus:ring-[#7C5CFC]/20 focus:border-[#7C5CFC] outline-none transition-all text-xs text-[#EDECE7] placeholder-[#5A5D65]"
+                rows={3}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe your design goals (e.g. Minimalist Cafe, Walnut Accent), target programs (e.g. Blender, Unreal Engine), and specs..."
+                className="w-full px-4 py-3 bg-white/[0.02] border border-white/[0.08] rounded-xl focus:ring-2 focus:ring-[#7C5CFC]/20 focus:border-[#7C5CFC] outline-none transition-all text-xs text-[#EDECE7] placeholder-[#5A5D65] resize-none"
               />
             </div>
 
             {/* Contact Info */}
             <div>
               <label htmlFor="contact" className="block text-[9px] font-bold text-[#9A9DA6] uppercase tracking-widest mb-2">
-                Contact E-mail or Phone
+                Contact Email
               </label>
               <input
                 id="contact"
-                type="text"
+                type="email"
                 required
+                disabled={!!user} // Locked if user is logged in
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
-                placeholder="email@domain.com or phone number"
-                className="w-full px-4 py-3 bg-white/[0.02] border border-white/[0.08] rounded-xl focus:ring-2 focus:ring-[#7C5CFC]/20 focus:border-[#7C5CFC] outline-none transition-all text-xs text-[#EDECE7] placeholder-[#5A5D65]"
+                placeholder="email@domain.com"
+                className="w-full px-4 py-3 bg-white/[0.02] border border-white/[0.08] rounded-xl focus:ring-2 focus:ring-[#7C5CFC]/20 focus:border-[#7C5CFC] outline-none transition-all text-xs text-[#EDECE7] placeholder-[#5A5D65] disabled:opacity-65 disabled:text-[#6B6E76]"
               />
             </div>
 
@@ -162,7 +207,7 @@ export default function CustomRequest() {
               className="w-full bg-[#7C5CFC] hover:bg-[#6D4DEF] text-white text-[10px] font-bold uppercase tracking-widest py-3.5 rounded-xl transition-all duration-300 shadow-lg shadow-[#7C5CFC]/20 flex justify-center items-center gap-2 cursor-pointer"
             >
               {loading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-              {loading ? "Registering Request..." : "Submit Consultation Request"}
+              {loading ? "Registering Request..." : "Submit Custom Request"}
             </Button>
           </form>
 
@@ -178,7 +223,7 @@ export default function CustomRequest() {
             </div>
             <DialogTitle className="text-lg font-bold uppercase tracking-wide text-white">Request Registered!</DialogTitle>
             <DialogDescription className="text-xs text-[#8A8D96] leading-relaxed">
-              We have received your custom consultation request. Our design team will inspect your preferences and reach out shortly via the contact information provided.
+              We have received your custom build commission. Our design team will inspect your details and reach out shortly via the contact information provided.
             </DialogDescription>
           </DialogHeader>
           <div className="pt-4 flex justify-center">

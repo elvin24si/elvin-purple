@@ -1,8 +1,51 @@
-// src/pages/Catalog.jsx
+// src/pages/member/Catalog.jsx
 import { useState, useEffect, useMemo } from "react";
 import PCCard from "../../components/PCCard";
 import FilterBar from "../../components/catalog/FilterBar";
 import { fetchPCCatalog, normalizePC } from "../../lib/supabasepc";
+import { getPromos, applyFeaturedOrder, getFeaturedOrder } from "../../lib/promoStore";
+import { X } from "lucide-react";
+
+// ── Inline Promo Banner
+function PromoBanner({ promo, onDismiss }) {
+  return (
+    <div
+      className="relative rounded-2xl overflow-hidden mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 p-5"
+      style={{ background: `linear-gradient(135deg, ${promo.color}ee, ${promo.color}77)` }}
+    >
+      <div className="absolute inset-0 opacity-10 pointer-events-none bg-[linear-gradient(45deg,white_1px,transparent_1px),linear-gradient(-45deg,white_1px,transparent_1px)] bg-[size:20px_20px]" />
+      <div className="relative flex-1 min-w-0">
+        <span
+          className="inline-block text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded-full border mb-1"
+          style={{
+            borderColor: promo.textColor === "white" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.15)",
+            color: promo.textColor === "white" ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.6)",
+            background: promo.textColor === "white" ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.06)",
+          }}
+        >
+          {promo.type}
+        </span>
+        <h3 className="text-base font-extrabold truncate" style={{ color: promo.textColor }}>{promo.title}</h3>
+        {promo.subtitle && <p className="text-xs opacity-75 mt-0.5 truncate" style={{ color: promo.textColor }}>{promo.subtitle}</p>}
+      </div>
+      {promo.cta_label && (
+        <span
+          className="relative shrink-0 px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider border cursor-default"
+          style={{
+            borderColor: promo.textColor + "50",
+            color: promo.textColor,
+            background: promo.textColor === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)",
+          }}
+        >{promo.cta_label}</span>
+      )}
+      <button onClick={onDismiss}
+        className="absolute top-3 right-3 p-1 cursor-pointer"
+        style={{ color: promo.textColor + "80" }}>
+        <X className="w-3.5 h-3.5" />
+      </button>
+    </div>
+  );
+}
 
 export default function Catalog() {
   const [pcData, setPcData] = useState([]);
@@ -10,15 +53,26 @@ export default function Catalog() {
   const [error, setError] = useState(null);
   const [dataForm, setDataForm] = useState({ searchTerm: "", selectedTag: "" });
 
+  const [promos, setPromos] = useState([]);
+  const [featuredOrder, setFeaturedOrder] = useState([]);
+  const [dismissedIds, setDismissedIds] = useState([]);
+
   // Fetch from Supabase on mount
   useEffect(() => {
     setLoading(true);
-    fetchPCCatalog()
-      .then((rows) => {
-        const normalized = rows.map(normalizePC);
-        // Exclude Point Shop items from the standard catalog
-        const standardPCs = normalized.filter((pc) => !pc.allowPointsPayment);
-        setPcData(standardPCs);
+    Promise.all([
+      fetchPCCatalog(),
+      getPromos(),
+      getFeaturedOrder(),
+    ])
+      .then(([rows, promoRows, orderIds]) => {
+        const normalized = rows
+          .filter((r) => ["Standard", "Signature"].includes(r.category))
+          .map(normalizePC)
+          .filter((pc) => !pc.allowPointsPayment);
+        setPcData(normalized);
+        setPromos(promoRows.filter((p) => p.active));
+        setFeaturedOrder(orderIds);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
@@ -29,8 +83,11 @@ export default function Catalog() {
     setDataForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Default = no user-applied search or tag filter
+  const isDefault = !dataForm.searchTerm && !dataForm.selectedTag;
+
   const filteredPCs = useMemo(() => {
-    return pcData.filter((pc) => {
+    const base = pcData.filter((pc) => {
       const _search = dataForm.searchTerm.toLowerCase();
       const searchableIndex = [pc.name, pc.specs.gpu, pc.specs.cpu, ...pc.tags]
         .join(" ")
@@ -41,11 +98,18 @@ export default function Catalog() {
         : true;
       return matchesSearch && matchesTag;
     });
-  }, [pcData, dataForm]);
+
+    return applyFeaturedOrder(base, isDefault, featuredOrder);
+  }, [pcData, dataForm, isDefault, featuredOrder]);
 
   const filterOptions = useMemo(
     () => [...new Set(pcData.flatMap((pc) => pc.tags))],
     [pcData]
+  );
+
+  const visiblePromos = useMemo(
+    () => promos.filter((p) => !dismissedIds.includes(p.id)),
+    [promos, dismissedIds]
   );
 
   if (loading) {
@@ -75,6 +139,20 @@ export default function Catalog() {
 
   return (
     <div className="max-w-7xl mx-auto px-8 py-12 bg-[#08090C]">
+
+      {/* Promo Banners — only shown in default (unfiltered) view */}
+      {isDefault && visiblePromos.length > 0 && (
+        <div className="space-y-3 mb-4">
+          {visiblePromos.map((promo) => (
+            <PromoBanner
+              key={promo.id}
+              promo={promo}
+              onDismiss={() => setDismissedIds((prev) => [...prev, promo.id])}
+            />
+          ))}
+        </div>
+      )}
+
       {/* Search & Filter */}
       <FilterBar
         searchTerm={dataForm.searchTerm}
@@ -89,8 +167,16 @@ export default function Catalog() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
-          {filteredPCs.map((pc) => (
-            <PCCard key={pc.id} pc={pc} />
+          {filteredPCs.map((pc, idx) => (
+            <div key={pc.id} className="relative">
+              {/* Featured badge for top-pinned item in default view */}
+              {isDefault && idx === 0 && (
+                <div className="absolute -top-3 left-0 z-10 bg-[#7C5CFC] text-white text-[8px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full">
+                  ★ Featured
+                </div>
+              )}
+              <PCCard pc={pc} />
+            </div>
           ))}
         </div>
       )}

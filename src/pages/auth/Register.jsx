@@ -11,6 +11,7 @@ export default function Register() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [accountType, setAccountType] = useState("Individual");
 
     // Status Trackers
     const [loading, setLoading] = useState(false);
@@ -39,13 +40,13 @@ export default function Register() {
                 username: name.trim(),
                 email: email.trim().toLowerCase(),
                 password: password,
-                role: "Individual", // Assigned fallback default role
+                role: accountType, // Set from user selection
                 avatar_url: "https://placeholder.com/default-avatar.png",
                 current_points: 0,
                 lifetime_points_earned: 0,
                 times_ordered: 0,
                 total_spent_idr: 0,
-                join_date: new Date().toISOString().split('T')[0] // Formats cleanly as YYYY-MM-DD
+                join_date: new Date().toISOString().split('T')[0]
             };
 
             await insertMember(payload);
@@ -123,6 +124,34 @@ export default function Register() {
                         className="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.1] rounded-sm focus:border-[#7C5CFC] outline-none transition-colors text-sm text-[#EDECE7] placeholder-[#5A5D65]"
                         placeholder="********"
                     />
+                </div>
+
+                <div>
+                    <label className="block text-[10px] font-bold text-[#9A9DA6] uppercase tracking-widest mb-2">
+                        Account Type
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                        {["Individual", "Business/Organization"].map((type) => (
+                            <button
+                                key={type}
+                                type="button"
+                                onClick={() => setAccountType(type)}
+                                className={`py-2.5 px-3 border text-[10px] font-bold uppercase tracking-wider rounded-sm transition-all cursor-pointer ${
+                                    accountType === type
+                                        ? "bg-[#7C5CFC] border-[#7C5CFC] text-white"
+                                        : "bg-white/[0.02] border-white/[0.1] text-[#8A8D96] hover:text-white"
+                                }`}
+                            >
+                                {type}
+                            </button>
+                        ))}
+                    </div>
+                    <p className="text-[9px] text-[#5A5D65] mt-1.5">
+                        {accountType === "Individual"
+                            ? "For personal use and individual purchases."
+                            : "For company or team procurement and bulk ordering."
+                        }
+                    </p>
                 </div>
                 <button
                     type="submit"

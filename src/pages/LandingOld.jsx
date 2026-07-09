@@ -213,7 +213,7 @@ export default function LandingOld() {
   const simRec = getSimulatorRecommendation(budgetSlider);
 
   return (
-    <div className="bg-[#08090C] text-[#EDECE7] min-h-screen font-sans antialiased overflow-x-hidden selection:bg-[#7C5CFC] selection:text-white">
+    <div className="bg-[#08090C] text-[#EDECE7] min-h-screen font-sans antialiased overflow-x-clip selection:bg-[#7C5CFC] selection:text-white">
       {/* Fonts: industrial display + clean body + mono for specs/data */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');

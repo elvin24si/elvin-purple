@@ -11,7 +11,7 @@ import BottomCTA from "../components/landing/BottomCTA";
 
 export default function Landing() {
   return (
-    <div className="bg-[#08090C] text-[#EDECE7] min-h-screen font-sans antialiased overflow-x-hidden selection:bg-[#7C5CFC] selection:text-white">
+    <div className="bg-[#08090C] text-[#EDECE7] min-h-screen font-sans antialiased overflow-x-clip selection:bg-[#7C5CFC] selection:text-white">
       {/* Dynamic Font Imports */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');

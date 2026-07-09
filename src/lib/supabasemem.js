@@ -143,3 +143,73 @@ export async function insertConsultation(data) {
   }
   return res.json();
 }
+
+// --- CUSTOM COMMISSIONS: Post a new custom commission request ---
+export async function insertCommission(data) {
+  const res = await fetch(`${SUPABASE_URL}/custom_commissions`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `Commission request failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+// --- CUSTOM COMMISSIONS: Fetch all commission requests ---
+export async function fetchCommissions() {
+  const res = await fetch(`${SUPABASE_URL}/custom_commissions?order=created_at.desc`, {
+    method: "GET",
+    headers,
+  });
+  if (!res.ok) throw new Error(`Failed to fetch commissions: ${res.statusText}`);
+  return res.json();
+}
+
+// --- CUSTOM COMMISSIONS: Fetch member commission requests ---
+export async function fetchMemberCommissions(memberId) {
+  const res = await fetch(
+    `${SUPABASE_URL}/custom_commissions?member_id=eq.${encodeURIComponent(memberId)}&order=created_at.desc`,
+    {
+      method: "GET",
+      headers,
+    }
+  );
+  if (!res.ok) throw new Error(`Failed to fetch member commissions: ${res.statusText}`);
+  return res.json();
+}
+
+// --- CUSTOM COMMISSIONS: Update a commission row ---
+export async function updateCommission(id, data) {
+  const res = await fetch(
+    `${SUPABASE_URL}/custom_commissions?id=eq.${encodeURIComponent(id)}`,
+    {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify(data),
+    }
+  );
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `Update failed: ${res.statusText}`);
+  }
+  return res.json();
+}
+
+// --- CUSTOM COMMISSIONS: Delete a commission row ---
+export async function deleteCommission(id) {
+  const res = await fetch(
+    `${SUPABASE_URL}/custom_commissions?id=eq.${encodeURIComponent(id)}`,
+    {
+      method: "DELETE",
+      headers: { ...headers, Prefer: "return=minimal" },
+    }
+  );
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `Delete failed: ${res.statusText}`);
+  }
+  return true;
+}

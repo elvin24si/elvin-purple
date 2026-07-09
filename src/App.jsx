@@ -24,6 +24,8 @@ const MemberList = React.lazy(() => import("./pages/admin/MemberList"));
 const PointsShop = React.lazy(() => import("./pages/member/PointsShop"));
 const PointsInventory = React.lazy(() => import("./pages/admin/PointsInventory"));
 const Cart = React.lazy(() => import("./pages/member/Cart"));
+const AdminCommissions = React.lazy(() => import("./pages/admin/AdminCommissions"));
+const PromoManager = React.lazy(() => import("./pages/admin/PromoManager"));
 
 function App() {
 
@@ -42,6 +44,8 @@ function App() {
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/memberlist" element={<MemberList />} />
             <Route path="/points-inventory" element={<PointsInventory />} />
+            <Route path="/admin-commissions" element={<AdminCommissions />} />
+            <Route path="/promos" element={<PromoManager />} />
           </Route>
 
 

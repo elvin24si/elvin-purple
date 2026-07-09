@@ -42,6 +42,16 @@ export default function Sidebar() {
                             Points Shop CRUD
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink to="/admin-commissions" className={menuClass}>
+                            Custom Requests
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/promos" className={menuClass}>
+                            Promo Manager
+                        </NavLink>
+                    </li>
                 </ul>
             </div>
 
