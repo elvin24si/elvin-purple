@@ -14,6 +14,7 @@ export default function SettingsPage() {
   // Controlled fields state binds
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   
   // Status hooks
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,7 @@ export default function SettingsPage() {
     setCurrentUser(user);
     setUsername(user.username || "");
     setPassword(user.password || "");
+    setNotificationsEnabled(user.notification === true);
   }, [navigate]);
 
   // Handle saving the username or password changes
@@ -47,7 +49,11 @@ export default function SettingsPage() {
     setSuccessMessage(null);
 
     try {
-      const updatedFields = { username: username.trim(), password: password };
+      const updatedFields = { 
+        username: username.trim(), 
+        password: password,
+        notification: notificationsEnabled 
+      };
       
       // Patch database entry using existing key reference
       await updateMember(currentUser.member_id, updatedFields);
@@ -150,6 +156,28 @@ export default function SettingsPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 bg-white/[0.03] border border-white/[0.1] rounded-md focus:border-[#7C5CFC] outline-none transition-colors text-sm text-[#EDECE7]"
             />
+          </div>
+
+          {/* Email notifications custom styled toggle */}
+          <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+            <div className="space-y-0.5">
+              <label htmlFor="settings-notification" className="text-xs font-bold text-[#EDECE7] uppercase tracking-wider block cursor-pointer">
+                Email Updates & Promos
+              </label>
+              <span className="text-[10px] text-[#6B6E76] block">
+                Receive notifications about exclusive custom builds and events.
+              </span>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                id="settings-notification"
+                type="checkbox"
+                checked={notificationsEnabled}
+                onChange={(e) => setNotificationsEnabled(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-9 h-5 bg-white/[0.08] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#EDECE7] after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#7C5CFC]"></div>
+            </label>
           </div>
 
           <button

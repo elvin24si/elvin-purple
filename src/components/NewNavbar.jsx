@@ -218,13 +218,12 @@ export default function NewNavbar() {
         <div className="hidden lg:flex items-center gap-4">
           {user ? (
             <div className="flex items-center gap-4">
-              <Button 
-                variant="outline" 
+              <button 
                 onClick={() => navigate(getDashboardPath())}
-                className="border-white/10 hover:bg-white/[0.05] text-[#EDECE7] text-[10px] uppercase font-bold tracking-widest px-4 py-2 rounded-lg cursor-pointer transition-all hover:border-[#7C5CFC]/30 active:scale-95"
+                className="border border-white/10 bg-transparent hover:bg-white/[0.05] text-[#EDECE7] hover:text-white text-[10px] uppercase font-bold tracking-widest px-4 py-2 rounded-lg cursor-pointer transition-all hover:border-[#7C5CFC]/30 active:scale-95"
               >
                 Go to Dashboard
-              </Button>
+              </button>
               
               {/* User Dropdown */}
               <div className="relative" ref={dropdownRef}>
@@ -364,16 +363,15 @@ export default function NewNavbar() {
                   Go to Dashboard
                 </Button>
 
-                <Button 
-                  variant="outline"
+                <button 
                   onClick={() => {
                     setIsOpen(false);
                     navigate("/settings");
                   }}
-                  className="w-full border-white/10 hover:bg-white/[0.05] text-[#EDECE7] text-xs font-bold uppercase tracking-widest py-3.5 rounded-xl cursor-pointer"
+                  className="w-full border border-white/10 bg-transparent hover:bg-white/[0.05] text-[#EDECE7] hover:text-white text-xs font-bold uppercase tracking-widest py-3.5 rounded-xl cursor-pointer transition-all active:scale-95"
                 >
                   Account Settings
-                </Button>
+                </button>
 
                 <button
                   onClick={handleLogout}
@@ -384,16 +382,15 @@ export default function NewNavbar() {
               </div>
             ) : (
               <div className="flex flex-col gap-4">
-                <Button 
-                  variant="outline"
+                <button 
                   onClick={() => {
                     setIsOpen(false);
                     navigate("/login");
                   }}
-                  className="w-full border-white/10 hover:bg-white/[0.05] text-[#EDECE7] text-xs font-bold uppercase tracking-widest py-3.5 rounded-xl cursor-pointer"
+                  className="w-full border border-white/10 bg-transparent hover:bg-white/[0.05] text-[#EDECE7] hover:text-white text-xs font-bold uppercase tracking-widest py-3.5 rounded-xl cursor-pointer transition-all active:scale-95"
                 >
                   Sign In
-                </Button>
+                </button>
                 <Button 
                   onClick={() => {
                     setIsOpen(false);

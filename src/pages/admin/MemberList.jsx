@@ -9,7 +9,6 @@ import {
 } from "../../lib/supabasemem";
 import { Plus, Search, Pencil, Trash2, X, Loader2, AlertTriangle, RefreshCw, User } from "lucide-react";
 
-// ─── EMPTY FORM TEMPLATE (mirrors Supabase column names) ─────────────────────
 const EMPTY_FORM = {
   username: "",
   email: "",
@@ -21,6 +20,7 @@ const EMPTY_FORM = {
   times_ordered: 0,
   total_spent_idr: 0,
   last_order_date: "",
+  notification: false,
 };
 
 const ROLE_OPTIONS = ["Individual", "Business/Organization", "Admin"];
@@ -124,6 +124,7 @@ export default function MemberList() {
       times_ordered: row.times_ordered ?? 0,
       total_spent_idr: row.total_spent_idr ?? 0,
       last_order_date: row.last_order_date ?? "",
+      notification: row.notification === true,
     });
     setActiveMemberId(row.member_id);
     setFormError(null);
@@ -290,6 +291,7 @@ export default function MemberList() {
                   <th className="py-4 px-4 w-[140px] text-center">Points Balance</th>
                   <th className="py-4 px-4 w-[160px] text-right">Total Spent</th>
                   <th className="py-4 px-4 w-[130px] text-center">Role</th>
+                  <th className="py-4 px-4 w-[120px] text-center">Notification</th>
                   <th className="py-4 px-6 w-[120px] text-center">Actions</th>
                 </tr>
               </thead>
@@ -344,6 +346,26 @@ export default function MemberList() {
                       <span className={`text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full border ${getRoleClass(row.role)}`}>
                         {row.role || "Individual"}
                       </span>
+                    </td>
+                    <td className="py-4 px-4 text-center">
+                      <button
+                        onClick={async () => {
+                          try {
+                            const newVal = !row.notification;
+                            await updateMember(row.member_id, { notification: newVal });
+                            setRows(prev => prev.map(r => r.member_id === row.member_id ? { ...r, notification: newVal } : r));
+                          } catch (err) {
+                            alert(`Failed to toggle notification: ${err.message}`);
+                          }
+                        }}
+                        className={`text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full border transition-all cursor-pointer select-none
+                          ${row.notification
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-100 font-bold hover:bg-emerald-100"
+                            : "bg-rose-50 text-rose-700 border-rose-100 font-bold hover:bg-rose-100"
+                          }`}
+                      >
+                        {row.notification ? "Subscribed" : "Unsubscribed"}
+                      </button>
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex justify-center items-center gap-1.5">
@@ -423,22 +445,38 @@ export default function MemberList() {
                   <Field label="Current Points" name="current_points" type="number" value={formData.current_points} onChange={handleFormChange} placeholder="0" />
                   <Field label="Lifetime Points Earned" name="lifetime_points_earned" type="number" value={formData.lifetime_points_earned} onChange={handleFormChange} placeholder="0" />
                 </FormRow>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
-                    Account Role
-                  </label>
-                  <select
-                    name="role"
-                    value={formData.role}
-                    onChange={handleFormChange}
-                    className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-[#7C5CFC] text-xs font-semibold text-slate-700 bg-white"
-                  >
-                    <option value="">— Select role —</option>
-                    {ROLE_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
-                </div>
+                <FormRow>
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+                      Account Role
+                    </label>
+                    <select
+                      name="role"
+                      value={formData.role}
+                      onChange={handleFormChange}
+                      className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-[#7C5CFC] text-xs font-semibold text-slate-700 bg-white"
+                    >
+                      <option value="">— Select role —</option>
+                      {ROLE_OPTIONS.map((opt) => (
+                        <option key={opt} value={opt}>{opt}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+                      Email Notification
+                    </label>
+                    <select
+                      name="notification"
+                      value={formData.notification ? "true" : "false"}
+                      onChange={(e) => setFormData(prev => ({ ...prev, notification: e.target.value === "true" }))}
+                      className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-[#7C5CFC] text-xs font-semibold text-slate-700 bg-white"
+                    >
+                      <option value="true">Subscribed (Yes)</option>
+                      <option value="false">Unsubscribed (No)</option>
+                    </select>
+                  </div>
+                </FormRow>
               </FieldGroup>
 
               {/* Order History */}

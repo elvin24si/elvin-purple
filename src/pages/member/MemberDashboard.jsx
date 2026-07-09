@@ -1,7 +1,7 @@
 // src/pages/member/MemberDashboard.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchMember } from "../../lib/supabasemem";
+import { fetchMember, updateMember } from "../../lib/supabasemem";
 import { fetchOrders, fetchPCCatalog } from "../../lib/supabasepc";
 import { Loader2 } from "lucide-react";
 
@@ -25,6 +25,9 @@ export default function MemberDashboard() {
   const [orders, setOrders] = useState([]);
   const [catalog, setCatalog] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [showNotificationPrompt, setShowNotificationPrompt] = useState(false);
+  const [updatingNotification, setUpdatingNotification] = useState(false);
 
   const [fluidProgress, setFluidProgress] = useState(45);
   const [logs, setLogs] = useState([
@@ -53,7 +56,12 @@ export default function MemberDashboard() {
           const freshUser = members.find((m) => m.member_id === user.member_id);
           if (freshUser) {
             setPointsBalance(freshUser.current_points || 0);
-            localStorage.setItem("current_user", JSON.stringify({ ...user, ...freshUser }));
+            const updatedUser = { ...user, ...freshUser };
+            localStorage.setItem("current_user", JSON.stringify(updatedUser));
+            setCurrentUser(updatedUser);
+            if (freshUser.notification === null || freshUser.notification === undefined) {
+              setShowNotificationPrompt(true);
+            }
           }
 
           // Filter user's specific orders
@@ -68,6 +76,22 @@ export default function MemberDashboard() {
       console.error("Error parsing user data", e);
     }
   }, [navigate]);
+
+  const handleNotificationResponse = async (val) => {
+    if (!currentUser || !currentUser.member_id) return;
+    setUpdatingNotification(true);
+    try {
+      await updateMember(currentUser.member_id, { notification: val });
+      const updatedUser = { ...currentUser, notification: val };
+      localStorage.setItem("current_user", JSON.stringify(updatedUser));
+      setCurrentUser(updatedUser);
+      setShowNotificationPrompt(false);
+    } catch (err) {
+      console.error("Failed to update notification settings:", err);
+    } finally {
+      setUpdatingNotification(false);
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -273,6 +297,48 @@ export default function MemberDashboard() {
 
         </div>
       </div>
+
+      {showNotificationPrompt && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+          <div className="relative w-full max-w-md bg-[#0E0F14] border border-[#7C5CFC]/20 rounded-2xl p-8 text-center shadow-[0_0_50px_rgba(124,92,252,0.15)] overflow-hidden animate-in zoom-in-95 duration-300">
+            {/* Background glow lines */}
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-[#7C5CFC]/10 rounded-full blur-[40px] pointer-events-none" />
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-[#A78BFA]/5 rounded-full blur-[40px] pointer-events-none" />
+            
+            <div className="flex flex-col items-center">
+              {/* Glowing Icon Container */}
+              <div className="w-16 h-16 rounded-full bg-[#7C5CFC]/10 border border-[#7C5CFC]/30 flex items-center justify-center mb-6 shadow-[0_0_15px_rgba(124,92,252,0.2)] text-2xl">
+                ✨
+              </div>
+              
+              <h2 className="text-xl font-bold text-[#F4F3EF] uppercase tracking-wider mb-3 font-sans">
+                Stay Updated!
+              </h2>
+              
+              <p className="text-sm text-[#9A9DA6] leading-relaxed mb-8 font-sans">
+                Would you like to receive exclusive updates, premium custom build showcases, and promotional discount rewards delivered directly to your email?
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-3 w-full">
+                <button
+                  disabled={updatingNotification}
+                  onClick={() => handleNotificationResponse(true)}
+                  className="flex-1 bg-[#7C5CFC] hover:bg-[#6D4DEF] disabled:opacity-50 text-white text-xs font-mono uppercase tracking-widest py-3.5 rounded-xl cursor-pointer transition-all duration-300 shadow-lg shadow-[#7C5CFC]/20 hover:shadow-[#7C5CFC]/40 hover:scale-[1.02] active:scale-95 text-center font-bold"
+                >
+                  {updatingNotification ? "Saving..." : "Yes, please"}
+                </button>
+                <button
+                  disabled={updatingNotification}
+                  onClick={() => handleNotificationResponse(false)}
+                  className="flex-1 border border-white/10 hover:bg-white/[0.05] disabled:opacity-50 text-[#9A9DA6] hover:text-[#EDECE7] text-xs font-mono uppercase tracking-widest py-3.5 rounded-xl cursor-pointer transition-all active:scale-95 text-center font-bold"
+                >
+                  No, thanks
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

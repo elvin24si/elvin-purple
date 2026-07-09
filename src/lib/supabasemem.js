@@ -90,6 +90,7 @@ export function normalizeMember(row) {
     total_spent_idr: row.total_spent_idr,
     join_date: row.join_date,
     last_order_date: row.last_order_date,
+    notification: row.notification,
   };
 }
 
