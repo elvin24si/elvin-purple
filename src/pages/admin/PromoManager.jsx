@@ -24,7 +24,9 @@ const EMPTY_FORM = {
   title: "",
   subtitle: "",
   type: "Banner",
+  bgType: "color",
   color: "#7C5CFC",
+  bgImageUrl: "",
   textColor: "white",
   linked_product_id: "",
   cta_label: "Shop Now",
@@ -186,28 +188,43 @@ export default function PromoManager() {
         {(() => {
           const live = promos.find(p => p.active);
           if (!live) return null;
+          const tc = live.text_color ?? live.textColor ?? "white";
+          const isImageBg = live.bg_type === "image" && (live.bg_image_url ?? live.bgImageUrl);
+          const bgStyle = isImageBg
+            ? {
+                backgroundImage: `url(${live.bg_image_url ?? live.bgImageUrl})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }
+            : {
+                background: `linear-gradient(135deg, ${live.color}ee, ${live.color}99)`,
+              };
+
           return (
             <div
-              className="relative rounded-2xl overflow-hidden p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4"
-              style={{ background: `linear-gradient(135deg, ${live.color}ee, ${live.color}99)` }}
+              className="relative rounded-2xl overflow-hidden p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 min-h-[110px]"
+              style={bgStyle}
             >
+              {isImageBg && (
+                <div className={`absolute inset-0 pointer-events-none ${tc === "white" || tc.toLowerCase() === "#ffffff" ? "bg-black/40" : "bg-white/20"}`} />
+              )}
               <div className="absolute inset-0 opacity-10 pointer-events-none bg-[linear-gradient(45deg,white_1px,transparent_1px),linear-gradient(-45deg,white_1px,transparent_1px)] bg-[size:24px_24px]" />
               <div className="relative flex-1 space-y-1">
                 <Badge type={live.type} />
-                <h3 className="text-xl font-extrabold mt-1" style={{ color: live.textColor }}>{live.title}</h3>
-                {live.subtitle && <p className="text-sm opacity-80" style={{ color: live.textColor }}>{live.subtitle}</p>}
+                <h3 className="text-xl font-extrabold mt-1" style={{ color: tc }}>{live.title}</h3>
+                {live.subtitle && <p className="text-sm opacity-80" style={{ color: tc }}>{live.subtitle}</p>}
               </div>
               {live.cta_label && (
                 <div className="relative shrink-0">
                   <div
                     className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider cursor-pointer border"
-                    style={{ borderColor: live.textColor + "40", color: live.textColor, background: live.textColor === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)" }}
+                    style={{ borderColor: tc + "40", color: tc, background: tc === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)" }}
                   >
                     {live.cta_label}
                   </div>
                 </div>
               )}
-              <span className="absolute top-3 right-3 text-[9px] font-bold uppercase tracking-widest opacity-50" style={{ color: live.textColor }}>
+              <span className="absolute top-3 right-3 text-[9px] font-bold uppercase tracking-widest opacity-50 z-10" style={{ color: tc }}>
                 Live Preview
               </span>
             </div>
@@ -229,7 +246,7 @@ export default function PromoManager() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                  <th className="py-3 px-5 text-left w-4"></th>
+                  <th className="py-3 px-5 text-left w-12">BG</th>
                   <th className="py-3 px-5 text-left">Title</th>
                   <th className="py-3 px-4 text-left w-[110px]">Type</th>
                   <th className="py-3 px-4 text-left">Subtitle</th>
@@ -241,7 +258,13 @@ export default function PromoManager() {
                 {promos.map((promo) => (
                   <tr key={promo.id} className="hover:bg-slate-50/40 transition-colors">
                     <td className="py-4 px-5">
-                      <div className="w-4 h-4 rounded-full border-2 border-white shadow-sm" style={{ background: promo.color }} />
+                      {promo.bg_type === "image" && (promo.bg_image_url ?? promo.bgImageUrl) ? (
+                        <div className="w-6 h-6 rounded-md border border-slate-200 overflow-hidden shadow-xs bg-slate-100 flex items-center justify-center">
+                          <img src={promo.bg_image_url ?? promo.bgImageUrl} alt="Promo" className="w-full h-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="w-6 h-6 rounded-full border-2 border-white shadow-sm cursor-help" style={{ background: promo.color }} title={promo.color} />
+                      )}
                     </td>
                     <td className="py-4 px-5 font-bold text-slate-800 text-xs">{promo.title}</td>
                     <td className="py-4 px-4"><Badge type={promo.type} /></td>
@@ -452,23 +475,68 @@ export default function PromoManager() {
                     className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-[#7C5CFC] text-xs font-semibold text-slate-800" />
                 </div>
 
-                <div>
-                  <FieldLabel>Banner Color</FieldLabel>
-                  <div className="flex gap-2 flex-wrap mt-1">
-                    {PROMO_COLORS.map(c => (
-                      <button key={c.bg} type="button"
-                        onClick={() => setForm(f => ({ ...f, color: c.bg, textColor: c.text }))}
-                        className={`w-7 h-7 rounded-full border-2 transition-all cursor-pointer ${form.color === c.bg ? "border-slate-800 scale-110" : "border-transparent"}`}
-                        style={{ background: c.bg }} title={c.label} />
-                    ))}
-                    <label className="flex items-center gap-1.5 text-[10px] text-slate-500 font-bold uppercase tracking-widest cursor-pointer">
-                      <input type="color" value={form.color}
-                        onChange={e => setForm(f => ({ ...f, color: e.target.value }))}
-                        className="w-7 h-7 rounded-full border border-slate-200 cursor-pointer p-0" />
-                      Custom
+                <div className="col-span-2">
+                  <FieldLabel>Background Type</FieldLabel>
+                  <div className="flex gap-4 items-center mt-1">
+                    <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700">
+                      <input type="radio" name="bgType" value="color" checked={form.bgType === "color"}
+                        onChange={() => setForm(f => ({ ...f, bgType: "color" }))}
+                        className="text-[#7C5CFC] focus:ring-[#7C5CFC]" />
+                      Solid Color
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700">
+                      <input type="radio" name="bgType" value="image" checked={form.bgType === "image"}
+                        onChange={() => setForm(f => ({ ...f, bgType: "image" }))}
+                        className="text-[#7C5CFC] focus:ring-[#7C5CFC]" />
+                      Background Image
                     </label>
                   </div>
                 </div>
+
+                {form.bgType === "color" ? (
+                  <div>
+                    <FieldLabel>Banner Color</FieldLabel>
+                    <div className="flex gap-2 flex-wrap mt-1">
+                      {PROMO_COLORS.map(c => (
+                        <button key={c.bg} type="button"
+                          onClick={() => setForm(f => ({ ...f, color: c.bg, textColor: c.text }))}
+                          className={`w-7 h-7 rounded-full border-2 transition-all cursor-pointer ${form.color === c.bg ? "border-slate-800 scale-110" : "border-transparent"}`}
+                          style={{ background: c.bg }} title={c.label} />
+                      ))}
+                      <label className="flex items-center gap-1.5 text-[10px] text-slate-500 font-bold uppercase tracking-widest cursor-pointer">
+                        <input type="color" value={form.color}
+                          onChange={e => setForm(f => ({ ...f, color: e.target.value }))}
+                          className="w-7 h-7 rounded-full border border-slate-200 cursor-pointer p-0" />
+                        Custom
+                      </label>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="col-span-2 space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <div>
+                      <FieldLabel>Background Image URL</FieldLabel>
+                      <input value={form.bgImageUrl} onChange={e => setForm(f => ({ ...f, bgImageUrl: e.target.value }))}
+                        placeholder="https://example.com/banner-bg.webp"
+                        className="w-full px-3.5 py-2.5 border border-slate-200 bg-white rounded-xl outline-none focus:border-[#7C5CFC] text-xs font-semibold text-slate-800" />
+                      <p className="text-[10px] text-slate-500 font-medium mt-1">
+                        <strong>Recommended Size:</strong> 1200 x 250 pixels (Aspect ratio ~5:1) for optimal quality. Host on a fast CDN and use optimized files (&lt;500KB).
+                      </p>
+                    </div>
+                    <div>
+                      <FieldLabel>Text Color Over Image</FieldLabel>
+                      <div className="flex gap-2 mt-1">
+                        <button type="button" onClick={() => setForm(f => ({ ...f, textColor: "white" }))}
+                          className={`px-4 py-2 rounded-lg border text-xs font-bold transition-all cursor-pointer ${form.textColor === "white" ? "bg-slate-800 text-white border-slate-800" : "bg-white text-slate-700 border-slate-200"}`}>
+                          Light (White)
+                        </button>
+                        <button type="button" onClick={() => setForm(f => ({ ...f, textColor: "#1e293b" }))}
+                          className={`px-4 py-2 rounded-lg border text-xs font-bold transition-all cursor-pointer ${form.textColor === "#1e293b" || form.textColor === "dark" || form.textColor === "black" ? "bg-slate-800 text-white border-slate-800" : "bg-white text-slate-700 border-slate-200"}`}>
+                          Dark (Slate)
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <FieldLabel>Linked Product (optional)</FieldLabel>
@@ -482,26 +550,39 @@ export default function PromoManager() {
                 {/* Live Mini Preview */}
                 <div className="col-span-2">
                   <FieldLabel>Preview</FieldLabel>
-                  <div className="rounded-xl overflow-hidden p-4 flex items-center gap-3"
-                    style={{ background: `linear-gradient(135deg, ${form.color}ee, ${form.color}88)` }}>
-                    <div className="flex-1 min-w-0">
-                      <Badge type={form.type} />
-                      <p className="text-sm font-extrabold mt-1 truncate" style={{ color: form.textColor }}>
-                        {form.title || "Your title here"}
-                      </p>
-                      {form.subtitle && (
-                        <p className="text-[11px] opacity-75 mt-0.5 truncate" style={{ color: form.textColor }}>
-                          {form.subtitle}
-                        </p>
-                      )}
-                    </div>
-                    {form.cta_label && (
-                      <div className="shrink-0 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border"
-                        style={{ borderColor: form.textColor + "50", color: form.textColor, background: form.textColor === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)" }}>
-                        {form.cta_label}
+                  {(() => {
+                    const previewIsImage = form.bgType === "image" && form.bgImageUrl;
+                    const previewStyle = previewIsImage
+                      ? { backgroundImage: `url(${form.bgImageUrl})`, backgroundSize: "cover", backgroundPosition: "center" }
+                      : { background: `linear-gradient(135deg, ${form.color}ee, ${form.color}88)` };
+                    
+                    return (
+                      <div className="relative rounded-xl overflow-hidden p-4 flex items-center gap-3 min-h-[90px]"
+                        style={previewStyle}>
+                        {previewIsImage && (
+                          <div className={`absolute inset-0 pointer-events-none ${form.textColor === "white" ? "bg-black/40" : "bg-white/20"}`} />
+                        )}
+                        <div className="absolute inset-0 opacity-10 pointer-events-none bg-[linear-gradient(45deg,white_1px,transparent_1px),linear-gradient(-45deg,white_1px,transparent_1px)] bg-[size:20px_20px]" />
+                        <div className="relative flex-1 min-w-0">
+                          <Badge type={form.type} />
+                          <p className="text-sm font-extrabold mt-1 truncate" style={{ color: form.textColor }}>
+                            {form.title || "Your title here"}
+                          </p>
+                          {form.subtitle && (
+                            <p className="text-[11px] opacity-75 mt-0.5 truncate" style={{ color: form.textColor }}>
+                              {form.subtitle}
+                            </p>
+                          )}
+                        </div>
+                        {form.cta_label && (
+                          <div className="relative shrink-0 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border z-10"
+                            style={{ borderColor: form.textColor + "50", color: form.textColor, background: form.textColor === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)" }}>
+                            {form.cta_label}
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
+                    );
+                  })()}
                 </div>
               </div>
             </div>

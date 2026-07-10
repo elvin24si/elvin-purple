@@ -8,39 +8,57 @@ import { X } from "lucide-react";
 
 // ── Inline Promo Banner
 function PromoBanner({ promo, onDismiss }) {
+  const tc = promo.text_color ?? promo.textColor ?? "white";
+  const isImageBg = promo.bg_type === "image" && (promo.bg_image_url ?? promo.bgImageUrl);
+  const bgStyle = isImageBg
+    ? {
+        backgroundImage: `url(${promo.bg_image_url ?? promo.bgImageUrl})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }
+    : {
+        background: `linear-gradient(135deg, ${promo.color}ee, ${promo.color}77)`,
+      };
+
   return (
     <div
       className="relative rounded-2xl overflow-hidden mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 p-5"
-      style={{ background: `linear-gradient(135deg, ${promo.color}ee, ${promo.color}77)` }}
+      style={bgStyle}
     >
+      {/* Readability backdrop overlay for image background */}
+      {isImageBg && (
+        <div className={`absolute inset-0 pointer-events-none ${tc === "white" || tc.toLowerCase() === "#ffffff" ? "bg-black/40" : "bg-white/20"}`} />
+      )}
+      
       <div className="absolute inset-0 opacity-10 pointer-events-none bg-[linear-gradient(45deg,white_1px,transparent_1px),linear-gradient(-45deg,white_1px,transparent_1px)] bg-[size:20px_20px]" />
+      
       <div className="relative flex-1 min-w-0">
         <span
           className="inline-block text-[8px] font-bold uppercase tracking-[0.2em] px-2 py-0.5 rounded-full border mb-1"
           style={{
-            borderColor: promo.textColor === "white" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.15)",
-            color: promo.textColor === "white" ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.6)",
-            background: promo.textColor === "white" ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.06)",
+            borderColor: tc === "white" ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.15)",
+            color: tc === "white" ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.6)",
+            background: tc === "white" ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.06)",
           }}
         >
           {promo.type}
         </span>
-        <h3 className="text-base font-extrabold truncate" style={{ color: promo.textColor }}>{promo.title}</h3>
-        {promo.subtitle && <p className="text-xs opacity-75 mt-0.5 truncate" style={{ color: promo.textColor }}>{promo.subtitle}</p>}
+        <h3 className="text-base font-extrabold truncate" style={{ color: tc }}>{promo.title}</h3>
+        {promo.subtitle && <p className="text-xs opacity-75 mt-0.5 truncate" style={{ color: tc }}>{promo.subtitle}</p>}
       </div>
       {promo.cta_label && (
         <span
           className="relative shrink-0 px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider border cursor-default"
           style={{
-            borderColor: promo.textColor + "50",
-            color: promo.textColor,
-            background: promo.textColor === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)",
+            borderColor: tc + "50",
+            color: tc,
+            background: tc === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)",
           }}
         >{promo.cta_label}</span>
       )}
       <button onClick={onDismiss}
-        className="absolute top-3 right-3 p-1 cursor-pointer"
-        style={{ color: promo.textColor + "80" }}>
+        className="absolute top-3 right-3 p-1 cursor-pointer z-10"
+        style={{ color: tc + "80" }}>
         <X className="w-3.5 h-3.5" />
       </button>
     </div>

@@ -12,11 +12,27 @@ import { Button } from "../components/ui/button";
 function PromoBanner({ promo, onDismiss }) {
   // Supabase returns snake_case; PromoManager preview passes camelCase — handle both
   const tc = promo.text_color ?? promo.textColor ?? "white";
+  const isImageBg = promo.bg_type === "image" && (promo.bg_image_url ?? promo.bgImageUrl);
+  const bgStyle = isImageBg
+    ? {
+        backgroundImage: `url(${promo.bg_image_url ?? promo.bgImageUrl})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }
+    : {
+        background: `linear-gradient(135deg, ${promo.color}ee, ${promo.color}88)`,
+      };
+
   return (
     <div
       className="relative rounded-2xl overflow-hidden mb-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 p-5 sm:p-6"
-      style={{ background: `linear-gradient(135deg, ${promo.color}ee, ${promo.color}88)` }}
+      style={bgStyle}
     >
+      {/* Readability backdrop overlay for image background */}
+      {isImageBg && (
+        <div className={`absolute inset-0 pointer-events-none ${tc === "white" || tc.toLowerCase() === "#ffffff" ? "bg-black/40" : "bg-white/20"}`} />
+      )}
+
       {/* Grid texture */}
       <div className="absolute inset-0 opacity-10 pointer-events-none bg-[linear-gradient(45deg,white_1px,transparent_1px),linear-gradient(-45deg,white_1px,transparent_1px)] bg-[size:20px_20px]" />
 
@@ -59,7 +75,7 @@ function PromoBanner({ promo, onDismiss }) {
       {/* Dismiss */}
       <button
         onClick={onDismiss}
-        className="absolute top-3 right-3 p-1 rounded-full transition-all cursor-pointer"
+        className="absolute top-3 right-3 p-1 rounded-full transition-all cursor-pointer z-10"
         style={{ color: tc + "80" }}
         title="Dismiss"
       >
