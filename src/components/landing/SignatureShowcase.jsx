@@ -3,22 +3,22 @@ import { Sparkles, Cpu, Gift, ShieldCheck, Star } from "lucide-react";
 
 const SIGNATURE_RIGS = [
   {
-    id: "miyako",
-    name: "The Miyako Edition",
-    description: "Sakura-pink and silver anodized accents. Features customized cables and a custom matching acrylic character standee inside the chassis.",
-    gpu: "RTX 4080 Super",
-    cpu: "Ryzen 7 7800X3D",
-    cooling: "Hardline Loops",
-    image: "https://i.imgur.com/sFanPRj.jpeg"
+    id: "aurelia",
+    name: "SIGNATURE // AURELIA",
+    description: "High-Ultra 1440p Gaming Rig, With a Gothic Black-and-Purple Design.",
+    gpu: "RTX 4070 (12GB VRAM)",
+    cpu: "Intel Core i7-13700K",
+    cooling: "AIO 360mm",
+    image: "https://i.imgur.com/zNB3AtS.jpeg"
   },
   {
-    id: "ayaka",
-    name: "The Ayaka Edition",
-    description: "Ice-blue frosted themes with clear liquid coolant. Complete with custom etched tempered glass insignias and custom braided lines.",
-    gpu: "RTX 4090 Founders",
-    cpu: "Ryzen 9 7950X3D",
-    cooling: "Clear Dual Radiator",
-    image: "https://sc04.alicdn.com/kf/H2cadc07ed1314493a7b5d6008049ec41e.jpg"
+    id: "alissa",
+    name: "SIGNATURE // ALISSA",
+    description: "Red-and-Gold Regal Flagship Build. Perfect for 4k gaming, content creation, and anything really.",
+    gpu: "RTX 5090 (24GB VRAM)",
+    cpu: "Intel Core i9-14900KS",
+    cooling: "Custom Piping Cooler with Red Coolant",
+    image: "https://i.imgur.com/iVdyqJV.jpeg"
   }
 ];
 
