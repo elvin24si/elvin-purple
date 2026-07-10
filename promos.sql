@@ -11,7 +11,9 @@ CREATE TABLE IF NOT EXISTS public.promos (
   title            TEXT         NOT NULL,
   subtitle         TEXT,
   type             TEXT         NOT NULL DEFAULT 'Banner',  -- Banner | New Release | Sale | Flash Deal | Featured
+  bg_type          TEXT         NOT NULL DEFAULT 'color',   -- color | image
   color            TEXT         NOT NULL DEFAULT '#7C5CFC', -- CSS hex color for the banner background
+  bg_image_url     TEXT         DEFAULT NULL,               -- URL of the background image
   text_color       TEXT         NOT NULL DEFAULT 'white',   -- 'white' or dark hex for readable contrast
   cta_label        TEXT,                                    -- Button label, e.g. "Shop Now"
   linked_product_id TEXT,                                   -- Optional FK reference to pc_catalog.product_id

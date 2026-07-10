@@ -29,7 +29,9 @@ export async function addPromo(data) {
     title:             data.title,
     subtitle:          data.subtitle || null,
     type:              data.type,
+    bg_type:           data.bgType || 'color',
     color:             data.color,
+    bg_image_url:      data.bgImageUrl || null,
     text_color:        data.textColor,   // map camelCase → snake_case column
     cta_label:         data.cta_label || null,
     linked_product_id: data.linked_product_id || null,
@@ -49,9 +51,11 @@ export async function addPromo(data) {
 
 /** Toggle active / paused */
 export async function updatePromo(id, patch) {
-  // Map textColor → text_color if present
+  // Map camelCase fields to snake_case table columns if present
   const body = { ...patch };
   if ("textColor" in body) { body.text_color = body.textColor; delete body.textColor; }
+  if ("bgType" in body) { body.bg_type = body.bgType; delete body.bgType; }
+  if ("bgImageUrl" in body) { body.bg_image_url = body.bgImageUrl; delete body.bgImageUrl; }
 
   const res = await fetch(
     `${SUPABASE_URL}/promos?id=eq.${encodeURIComponent(id)}`,
