@@ -59,16 +59,30 @@ function PromoBanner({ promo, onDismiss }) {
 
       {promo.cta_label && (
         <div className="relative shrink-0">
-          <span
-            className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border cursor-default select-none"
-            style={{
-              borderColor: tc + "50",
-              color: tc,
-              background: tc === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)",
-            }}
-          >
-            {promo.cta_label}
-          </span>
+          {promo.linked_product_id ? (
+            <Link
+              to={`/pc/${promo.linked_product_id}`}
+              className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border cursor-pointer hover:bg-white/10 transition-colors inline-block text-center"
+              style={{
+                borderColor: tc + "50",
+                color: tc,
+                background: tc === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)",
+              }}
+            >
+              {promo.cta_label}
+            </Link>
+          ) : (
+            <span
+              className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border cursor-default select-none"
+              style={{
+                borderColor: tc + "50",
+                color: tc,
+                background: tc === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)",
+              }}
+            >
+              {promo.cta_label}
+            </span>
+          )}
         </div>
       )}
 

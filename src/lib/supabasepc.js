@@ -21,6 +21,20 @@ export async function fetchPCCatalog() {
   return res.json();
 }
 
+// --- READ: Fetch a single row by product_id from pc_catalog ---
+export async function fetchPCById(productId) {
+  const res = await fetch(
+    `${SUPABASE_URL}/pc_catalog?product_id=eq.${encodeURIComponent(productId)}`,
+    {
+      method: "GET",
+      headers,
+    }
+  );
+  if (!res.ok) throw new Error(`Failed to fetch product: ${res.statusText}`);
+  const data = await res.json();
+  return data[0] ? normalizePC(data[0]) : null;
+}
+
 // --- CREATE: Insert a new product row ---
 export async function insertPC(data) {
   const res = await fetch(`${SUPABASE_URL}/pc_catalog`, {

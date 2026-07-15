@@ -1,5 +1,6 @@
 // src/pages/member/Catalog.jsx
 import { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import PCCard from "../../components/PCCard";
 import FilterBar from "../../components/catalog/FilterBar";
 import { fetchPCCatalog, normalizePC } from "../../lib/supabasepc";
@@ -47,14 +48,32 @@ function PromoBanner({ promo, onDismiss }) {
         {promo.subtitle && <p className="text-xs opacity-75 mt-0.5 truncate" style={{ color: tc }}>{promo.subtitle}</p>}
       </div>
       {promo.cta_label && (
-        <span
-          className="relative shrink-0 px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider border cursor-default"
-          style={{
-            borderColor: tc + "50",
-            color: tc,
-            background: tc === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)",
-          }}
-        >{promo.cta_label}</span>
+        <div className="relative shrink-0">
+          {promo.linked_product_id ? (
+            <Link
+              to={`/catalog/pc/${promo.linked_product_id}`}
+              className="relative shrink-0 px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider border cursor-pointer hover:bg-white/10 transition-colors inline-block text-center"
+              style={{
+                borderColor: tc + "50",
+                color: tc,
+                background: tc === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)",
+              }}
+            >
+              {promo.cta_label}
+            </Link>
+          ) : (
+            <span
+              className="relative shrink-0 px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider border cursor-default"
+              style={{
+                borderColor: tc + "50",
+                color: tc,
+                background: tc === "white" ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)",
+              }}
+            >
+              {promo.cta_label}
+            </span>
+          )}
+        </div>
       )}
       <button onClick={onDismiss}
         className="absolute top-3 right-3 p-1 cursor-pointer z-10"

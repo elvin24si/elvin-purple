@@ -26,6 +26,7 @@ const PointsInventory = React.lazy(() => import("./pages/admin/PointsInventory")
 const Cart = React.lazy(() => import("./pages/member/Cart"));
 const AdminCommissions = React.lazy(() => import("./pages/admin/AdminCommissions"));
 const PromoManager = React.lazy(() => import("./pages/admin/PromoManager"));
+const PCDetail = React.lazy(() => import("./pages/PCDetail"));
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/old-landing" element={<LandingOld />} />
           <Route path="/guestCatalog" element={<GuestCatalog />} />
+          <Route path="/pc/:id" element={<PCDetail />} />
 
           {/* Main Admin Pages with Sidebar Layout */}
           <Route element={<AdminLayout />}>
@@ -54,6 +56,7 @@ function App() {
             <Route path="/member" element={<MemberDashboard />} />
             <Route path="/custom" element={<Custom />} />
             <Route path="/catalog" element={<Catalog />} />
+            <Route path="/catalog/pc/:id" element={<PCDetail />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/points-shop" element={<PointsShop />} />
             <Route path="/cart" element={<Cart />} />

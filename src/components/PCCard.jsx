@@ -43,8 +43,18 @@ export default function PCCard({ pc }) {
     setTimeout(() => setAdded(false), 2000);
   };
 
+  const handleDetailsClick = (e) => {
+    e.stopPropagation();
+    const isMemberView = window.location.pathname.startsWith("/catalog") || window.location.pathname.startsWith("/member");
+    if (isMemberView) {
+      navigate(`/catalog/pc/${pc.id}`);
+    } else {
+      navigate(`/pc/${pc.id}`);
+    }
+  };
+
   return (
-    <div className="group cursor-pointer flex flex-col">
+    <div className="group cursor-pointer flex flex-col" onClick={handleDetailsClick}>
       {/* Image & Hover Container */}
       <div className="relative aspect-[4/5] bg-white/[0.02] mb-6 overflow-hidden border border-white/[0.07] rounded-xl transition-all duration-700 group-hover:shadow-xl group-hover:shadow-[#7C5CFC]/10 group-hover:-translate-y-1.5">
         <img
@@ -80,12 +90,20 @@ export default function PCCard({ pc }) {
             </div>
           </div>
 
-          {/* Bottom Section: Order Button */}
-          <div className="translate-y-6 group-hover:translate-y-0 transition-all duration-700 delay-75">
+          {/* Bottom Section: Buttons */}
+          <div className="flex gap-2.5 translate-y-6 group-hover:translate-y-0 transition-all duration-700 delay-75 w-full">
             <button
+              type="button"
+              onClick={handleDetailsClick}
+              className="flex-1 py-3 text-[9px] font-bold uppercase tracking-[0.15em] rounded-lg transition-all duration-300 border border-white/20 text-[#EDECE7] hover:bg-white/[0.05] hover:border-white/40 text-center"
+            >
+              Details
+            </button>
+            <button
+              type="button"
               disabled={isOutOfStock}
               onClick={handleOrderClick}
-              className={`w-full py-3.5 text-[10px] font-bold uppercase tracking-[0.2em] rounded-lg transition-all duration-300 border
+              className={`flex-1 py-3 text-[9px] font-bold uppercase tracking-[0.15em] rounded-lg transition-all duration-300 border text-center
                 ${isOutOfStock
                   ? "bg-white/[0.02] border-white/[0.06] text-[#5A5D65] cursor-not-allowed"
                   : added
@@ -93,7 +111,7 @@ export default function PCCard({ pc }) {
                     : "bg-[#7C5CFC] border-[#7C5CFC] text-white hover:bg-transparent hover:text-[#C9C2FF] hover:border-[#7C5CFC]/40"
                 }`}
             >
-              {isOutOfStock ? "Out of Stock" : added ? "Added to Cart ✓" : "Add to Cart"}
+              {isOutOfStock ? "Out of Stock" : added ? "Added ✓" : "Add to Cart"}
             </button>
           </div>
         </div>
